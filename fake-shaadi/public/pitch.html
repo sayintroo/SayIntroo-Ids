@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SayIntro × Communite · Pitch</title>
+<meta name="description" content="Fake shaadi, real connections — SayIntro for Communite Chandrapur.">
+<meta name="theme-color" content="#0c0b10">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👋</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0b10; --text: #f8f3ea; --muted: rgba(248, 243, 234, 0.62); --line: rgba(248, 243, 234, 0.13); --card: rgba(255, 255, 255, 0.05);
+    --lime: #c6f432; --pink: #ff4f9a; --gold: #f5c45e;
+    --display: 'Bricolage Grotesque', system-ui, sans-serif; --serif: 'Instrument Serif', Georgia, serif; --mono: 'Space Mono', ui-monospace, monospace;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font-family: var(--display); overflow: hidden; }
+  .deck { display: flex; height: 100dvh; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none; overscroll-behavior-x: contain; }
+  .deck::-webkit-scrollbar { display: none; }
+  .slide { flex: 0 0 100vw; height: 100dvh; scroll-snap-align: start; overflow-y: auto; display: flex; padding: 64px 16px 96px; position: relative; isolation: isolate; }
+  .slide::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+  .s1::before { background: radial-gradient(60vmax 40vmax at 90% 0%, rgba(255, 79, 154, 0.35), transparent 60%), radial-gradient(60vmax 40vmax at 0% 100%, rgba(198, 244, 50, 0.18), transparent 60%); }
+  .s2::before { background: radial-gradient(50vmax 40vmax at 0% 0%, rgba(255, 79, 154, 0.2), transparent 60%); }
+  .s3::before { background: radial-gradient(60vmax 40vmax at 100% 100%, rgba(198, 244, 50, 0.16), transparent 60%); }
+  .s4::before { background: radial-gradient(60vmax 40vmax at 100% 0%, rgba(245, 196, 94, 0.18), transparent 60%); }
+  .s5::before { background: radial-gradient(70vmax 50vmax at 50% 50%, rgba(198, 244, 50, 0.16), transparent 60%); }
+  .s6::before { background: radial-gradient(60vmax 40vmax at 0% 0%, rgba(255, 79, 154, 0.25), transparent 60%), radial-gradient(60vmax 40vmax at 100% 100%, rgba(245, 196, 94, 0.15), transparent 60%); }
+  .in { width: 100%; max-width: 1000px; margin: auto; }
+  .kick { font-family: var(--mono); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--lime); }
+  h1 { font-size: clamp(54px, 14vw, 132px); line-height: 0.88; letter-spacing: -0.05em; margin: 14px 0 18px; }
+  h2 { font-size: clamp(36px, 8.5vw, 76px); line-height: 0.95; letter-spacing: -0.04em; margin: 10px 0 22px; }
+  .serif { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; }
+  .pink { color: var(--pink); } .lime { color: var(--lime); } .gold { color: var(--gold); } .muted { color: var(--muted); }
+  .lead { font-size: clamp(18px, 2.6vw, 24px); color: var(--muted); max-width: 640px; line-height: 1.4; }
+  .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
+  .c { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 18px; }
+  .c .em { font-size: 30px; }
+  .c b { display: block; font-size: 20px; margin: 6px 0 4px; letter-spacing: -0.01em; }
+  .c p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.4; }
+  .c.hi { border-color: rgba(198, 244, 50, 0.5); background: linear-gradient(150deg, rgba(198, 244, 50, 0.14), rgba(255, 255, 255, 0.03)); }
+  .pill { display: inline-block; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line); font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; margin: 0 6px 8px 0; }
+  .free { font-size: clamp(72px, 20vw, 180px); font-weight: 800; letter-spacing: -0.06em; line-height: 0.85; color: var(--lime); }
+  .steps { counter-reset: s; display: grid; gap: 10px; margin-top: 22px; }
+  .steps div { counter-increment: s; display: flex; gap: 14px; align-items: flex-start; font-size: clamp(17px, 2.3vw, 21px); }
+  .steps div::before { content: counter(s); flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--lime); color: #142000; display: grid; place-items: center; font-weight: 800; font-size: 16px; }
+  .cta { display: inline-flex; align-items: center; gap: 10px; padding: 16px 24px; border-radius: 999px; background: var(--lime); color: #142000; font-weight: 800; font-size: 18px; text-decoration: none; margin-top: 22px; }
+  .brand { font-size: clamp(60px, 16vw, 140px); font-weight: 800; letter-spacing: -0.06em; line-height: 0.9; }
+  .brand span { color: var(--pink); }
+  .top { position: fixed; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; padding: 16px; z-index: 5; font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; color: var(--muted); pointer-events: none; background: linear-gradient(rgba(12, 11, 16, 0.95) 60%, transparent); }
+  .top b { color: var(--text); }
+  .nav { position: fixed; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; gap: 14px; padding: 14px 16px calc(14px + env(safe-area-inset-bottom)); z-index: 5; background: linear-gradient(transparent, rgba(12, 11, 16, 0.92) 40%); }
+  .nav button { width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line); background: var(--card); color: var(--text); font-size: 20px; cursor: pointer; }
+  .nav button:disabled { opacity: 0.3; }
+  .dots { display: flex; gap: 8px; }
+  .dots i { width: 8px; height: 8px; border-radius: 99px; background: var(--line); transition: all 0.25s; cursor: pointer; }
+  .dots i.on { width: 26px; background: var(--lime); }
+  .swipe { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 26px; letter-spacing: 0.1em; animation: nudge 1.6s ease-in-out infinite; }
+  @keyframes nudge { 50% { transform: translateX(8px); } }
+</style>
+</head>
+<body>
+<div class="top"><span><b>SayIntro</b> × Communite CP</span><span id="pg">01 / 06</span></div>
+
+<main class="deck" id="deck">
+  <!-- 1 -->
+  <section class="slide s1"><div class="in">
+    <div class="kick">#AanshKiShaadi · Chandrapur</div>
+    <h1>Fake shaadi,<br><span class="serif pink">real connections.</span></h1>
+    <p class="lead">Communite ka Fake Shaadi already viral hai. Hum usko ek aisa event banate hain jahan strangers dost bante hain — aur party khatam hone ke baad bhi chalti rehti hai.</p>
+    <div class="swipe">swipe karo →</div>
+  </div></section>
+
+  <!-- 2 -->
+  <section class="slide s2"><div class="in">
+    <div class="kick">The problem</div>
+    <h2>Party mast hoti hai. <span class="serif gold">Par...</span></h2>
+    <div class="grid">
+      <div class="c"><div class="em">😶</div><b>Awkward strangers</b><p>Log aate hain, apne 3 doston ke group mein hi reh jaate hain. "Meet like-minded people" bas bio mein reh jaata hai.</p></div>
+      <div class="c"><div class="em">👻</div><b>No-shows</b><p>Form 300 ne bhara, aaye 140. Headcount ka andaza nahi, food aur space ka hisaab gadbad.</p></div>
+      <div class="c"><div class="em">📉</div><b>No data for sponsors</b><p>Sponsor poochta hai "kitne log aaye, kitna engagement?" — jawab: "bahut saare the bhai". Next deal mushkil.</p></div>
+      <div class="c"><div class="em">🫥</div><b>Event ends, sab bhool jaate hain</b><p>Agle din na koi connection, na content, na koi wajah wapas aane ki.</p></div>
+    </div>
+  </div></section>
+
+  <!-- 3 -->
+  <section class="slide s3"><div class="in">
+    <div class="kick">What we bring</div>
+    <h2>Ek QR. <span class="serif lime">Poori shaadi live.</span></h2>
+    <div class="grid">
+      <div class="c"><div class="em">📲</div><b>QR entry + team assign</b><p>Scan → naam + Insta → auto team: Ladkiwale vs Ladkewale. Balanced teams, instant ice-breaker.</p></div>
+      <div class="c"><div class="em">🚩</div><b>Red Flag Kundli booth</b><p>2 log, 6 funny sawaal, "Gun mile: 28/36". Har couple ek Insta story leke jaata hai.</p></div>
+      <div class="c"><div class="em">⚡</div><b>Live polls + Aura leaderboard</b><p>Phone pe vote, projector pe live bars. Host aura points deta hai — naagin dance = +500.</p></div>
+      <div class="c"><div class="em">💸</div><b>Real Shagun for NGO</b><p>UPI shagun, live counter, leaderboard, shareable shagun cards. Fake shaadi, real impact.</p></div>
+      <div class="c hi"><div class="em">💘</div><b>Rishta Pakka</b><p>Finale pe har guest 3 log chunta hai. Sirf mutual pe dono ko handle milta hai. 100% private, zero cringe.</p></div>
+    </div>
+  </div></section>
+
+  <!-- 4 -->
+  <section class="slide s4"><div class="in">
+    <div class="kick">What the club gets</div>
+    <h2>Sirf vibes nahi, <span class="serif gold">numbers bhi.</span></h2>
+    <div class="grid">
+      <div class="c"><div class="em">📣</div><b>More reach</b><p>Har shagun card, kundli result aur reel #AanshKiShaadi ke saath stories pe jaata hai. Free, organic, Gen Z-native.</p></div>
+      <div class="c"><div class="em">🛡️</div><b>Safer, verified entry</b><p>Har guest naam + Insta handle ke saath check-in. Pata hai kaun andar hai.</p></div>
+      <div class="c"><div class="em">📊</div><b>Sponsor report, real numbers</b><p>Guests, votes, participation, shagun raised — ek WhatsApp-ready report, event ke same night.</p></div>
+      <div class="c"><div class="em">🔁</div><b>Repeat crowd</b><p>Mutual matches aur yaadein = log agle event ka wait karte hain. Community actually grows.</p></div>
+    </div>
+  </div></section>
+
+  <!-- 5 -->
+  <section class="slide s5"><div class="in">
+    <div class="kick">The offer</div>
+    <div class="free">First event<br><span class="serif" style="color:var(--text)">free.</span></div>
+    <p class="lead" style="margin-top:18px;">No catch. Hum dikhana chahte hain ki ye kaam karta hai — tumhare crowd ke saath, tumhare event pe.</p>
+    <div class="steps">
+      <div><span><b>Setup hum karte hain</b> — QR, screens, booth, admin panel, sab ready.</span></div>
+      <div><span><b>Club bas stage + screen access deta hai</b> — ek projector, ek laptop jagah.</span></div>
+      <div><span><b>Event ke baad report</b> — numbers jo next sponsor ko dikha sako.</span></div>
+    </div>
+  </div></section>
+
+  <!-- 6 -->
+  <section class="slide s6"><div class="in">
+    <div class="kick">Let's talk</div>
+    <div class="brand">Say<span>Intro</span></div>
+    <p class="lead" style="margin-top:14px;">Strangers ko intros chahiye, clubs ko data. Hum dono dete hain. <span class="serif lime">Agla event saath mein?</span></p>
+    <a class="cta" href="mailto:sayintroo@gmail.com?subject=Communite%20%C3%97%20SayIntro">✉️ sayintroo@gmail.com</a>
+    <div style="margin-top:18px;"><span class="pill">QR entry</span><span class="pill">Kundli booth</span><span class="pill">Live polls</span><span class="pill">Real Shagun</span><span class="pill">Rishta Pakka</span></div>
+  </div></section>
+</main>
+
+<nav class="nav">
+  <button id="prev" aria-label="Previous slide">←</button>
+  <div class="dots" id="dots"></div>
+  <button id="next" aria-label="Next slide">→</button>
+</nav>
+
+<script>
+(function () {
+  const deck = document.getElementById('deck');
+  const slides = [...deck.children];
+  const dots = document.getElementById('dots');
+  dots.innerHTML = slides.map((_, i) => `<i data-i="${i}"></i>`).join('');
+  let cur = 0;
+  const go = (i) => { i = Math.max(0, Math.min(slides.length - 1, i)); deck.scrollTo({ left: i * deck.clientWidth }); };
+  function update() {
+    cur = Math.round(deck.scrollLeft / deck.clientWidth);
+    [...dots.children].forEach((d, i) => d.classList.toggle('on', i === cur));
+    document.getElementById('pg').textContent = String(cur + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
+    document.getElementById('prev').disabled = cur === 0;
+    document.getElementById('next').disabled = cur === slides.length - 1;
+    history.replaceState(null, '', '#' + (cur + 1));
+  }
+  deck.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
+  document.getElementById('prev').addEventListener('click', () => go(cur - 1));
+  document.getElementById('next').addEventListener('click', () => go(cur + 1));
+  dots.addEventListener('click', (e) => e.target.dataset.i && go(Number(e.target.dataset.i)));
+  document.addEventListener('keydown', (e) => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); go(cur + 1); }
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); go(cur - 1); }
+  });
+  addEventListener('resize', () => go(cur));
+  const start = Number(location.hash.slice(1)) - 1;
+  if (start > 0) { deck.style.scrollBehavior = 'auto'; go(start); deck.style.scrollBehavior = ''; }
+  addEventListener('hashchange', () => { const i = Number(location.hash.slice(1)) - 1; if (i >= 0 && i !== cur) go(i); });
+  update();
+})();
+</script>
+</body>
+</html>

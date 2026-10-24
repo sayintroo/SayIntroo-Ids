@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Baraat Live · #AanshKiShaadi</title>
+<meta name="theme-color" content="#0d0405">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💃</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/base.css">
+<link rel="stylesheet" href="/assets/party.css">
+<style>
+  .join { min-height: 100dvh; display: flex; flex-direction: column; justify-content: center; padding: 30px 0; }
+  .join h1 { font-size: clamp(48px, 15vw, 72px); line-height: 0.9; letter-spacing: -0.04em; margin: 10px 0 12px; }
+  .join h1 .serif { color: var(--gold); display: block; }
+  .at { position: relative; }
+  .at::before { content: '@'; position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--muted); font-weight: 700; }
+  .at .input { padding-left: 34px; }
+  .consent { display: flex; gap: 8px; font-size: 13px; color: var(--muted); margin-top: 12px; }
+
+  .reveal { position: fixed; inset: 0; z-index: 60; background: var(--bg); display: grid; place-items: center; text-align: center; padding: 24px; }
+  .reveal .big { font-size: clamp(52px, 16vw, 90px); font-weight: 800; letter-spacing: -0.04em; line-height: 0.95; animation: zoom 0.7s cubic-bezier(.2,1.6,.4,1) both; animation-delay: 1.4s; }
+  .reveal .drum { font-family: var(--mono); color: var(--muted); animation: blink 0.35s 4 alternate; }
+  @keyframes zoom { from { transform: scale(0.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  @keyframes blink { to { opacity: 0.2; } }
+
+  .me { display: flex; justify-content: space-between; align-items: center; padding-top: 16px; }
+  .me .hi { font-size: 22px; font-weight: 800; line-height: 1.1; }
+  .me .aura { text-align: right; }
+  .me .aura b { font-size: 26px; display: block; line-height: 1; color: var(--gold); }
+  .vs { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; margin-top: 12px; text-align: center; }
+  .vs b { font-size: 28px; display: block; letter-spacing: -0.02em; }
+  .vs .v { font-family: var(--serif); font-style: italic; font-size: 26px; color: var(--muted); }
+  .pane h2 { font-size: 30px; letter-spacing: -0.02em; margin: 14px 0 6px; line-height: 1; }
+  .pane h2 .serif { color: var(--gold); }
+  .poll { margin-top: 12px; }
+  .poll .q { font-size: 19px; font-weight: 800; line-height: 1.2; }
+  .closed-tag { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+  .g-row { display: flex; align-items: center; gap: 12px; padding: 12px 4px; border-bottom: 1px solid var(--line); cursor: pointer; }
+  .g-row .av { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; background: var(--card-2); flex: none; }
+  .g-row .grow { flex: 1; min-width: 0; }
+  .g-row .grow b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .g-row .grow small { color: var(--muted); }
+  .g-row .tick { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; flex: none; }
+  .g-row.on .tick { background: var(--pink); border-color: var(--pink); }
+  .g-row.on .tick::after { content: '✓'; color: #fff; font-weight: 800; font-size: 14px; }
+  .g-list { max-height: 50vh; overflow-y: auto; margin-top: 8px; }
+  .save-bar { position: sticky; bottom: 0; padding: 12px 0 calc(12px + env(safe-area-inset-bottom)); background: linear-gradient(transparent, var(--bg) 30%); }
+
+  .match { text-align: center; padding: 26px 18px; background: linear-gradient(160deg, rgba(255, 79, 154, 0.25), rgba(245, 196, 94, 0.12)); border-color: rgba(255, 79, 154, 0.5); }
+  .match .big { font-size: 34px; font-weight: 800; line-height: 1.05; letter-spacing: -0.02em; }
+  .match a.h { display: block; margin-top: 10px; padding: 14px; border-radius: 14px; background: rgba(0,0,0,0.35); font-size: 20px; font-weight: 800; text-decoration: none; }
+  .lb li { display: flex; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .lb { list-style: none; padding: 0; margin: 0; }
+  .lb .nm { flex: 1; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .phera { display: flex; justify-content: space-between; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="cfgWarn"></div>
+
+  <!-- JOIN -->
+  <div class="join hidden" id="joinView">
+    <div class="mono gold" id="jTag"></div>
+    <h1>Shaadi mein <span class="serif">swagat hai 🙏</span></h1>
+    <p class="muted" style="margin:0 0 8px;">Naam daalo, team pao, polls pe vote karo, gossip bhejo, aura kamao. Ladkiwale vs Ladkewale — let's go.</p>
+    <form id="joinForm" class="card">
+      <label class="lbl" for="jName">Tumhara naam</label>
+      <input class="input" id="jName" maxlength="40" required placeholder="e.g. Riya" autocomplete="given-name">
+      <label class="lbl" for="jHandle">Insta handle</label>
+      <div class="at"><input class="input" id="jHandle" maxlength="31" required placeholder="riya.vibes" autocapitalize="off" autocorrect="off" spellcheck="false"></div>
+      <div class="consent">🔒 <span>Tumhara naam aur handle sirf is event ke guests ko dikhega.</span></div>
+      <button class="btn block" style="margin-top:16px;" id="joinBtn">Baraat join karo 💃🕺</button>
+    </form>
+  </div>
+
+  <!-- APP -->
+  <div class="hidden" id="appView">
+    <div class="me">
+      <div><div class="mono muted" id="aTag"></div><div class="hi">Hi <span id="meName"></span> 👋</div><span class="team-pill" id="meTeam"></span></div>
+      <div class="aura"><b id="meAura">0</b><span class="mono muted">aura pts</span></div>
+    </div>
+    <div class="card vs">
+      <div><span class="t-ladkiwale mono">Ladkiwale</span><b id="sGirls">0</b></div>
+      <div class="v">vs</div>
+      <div><span class="t-ladkewale mono">Ladkewale</span><b id="sBoys">0</b></div>
+    </div>
+
+    <div class="tabs" id="tabs">
+      <button data-tab="polls" class="on">🗳️ Polls<span class="dot hidden" id="dotPolls"></span></button>
+      <button data-tab="gossip">📰 Gossip bhejo</button>
+      <button data-tab="rishta">💘 Rishta Pakka<span class="dot hidden" id="dotRishta"></span></button>
+      <button data-tab="score">🏆 Score</button>
+    </div>
+
+    <div class="pane" id="pane-polls">
+      <h2>Live <span class="serif">polls</span></h2>
+      <div id="polls"><p class="muted">Host jaldi poll daalega. Ruko zara, sabar karo 😌</p></div>
+    </div>
+
+    <div class="pane hidden" id="pane-gossip">
+      <h2>Gossip <span class="serif">bhejo</span></h2>
+      <p class="muted" style="margin:0 0 10px;">100% anonymous. Host approve karega toh stage pe <b>Baraat Breaking News</b> mein chalega. Keep it fun, no personal attacks 🙏</p>
+      <form class="card" id="gForm">
+        <textarea class="input" id="gText" maxlength="140" placeholder="BREAKING: Dulhe ke cousin ne 4th plate gulab jamun li 🍮" required></textarea>
+        <div class="mono muted" style="text-align:right;margin-top:6px;"><span id="gCount">0</span>/140</div>
+        <button class="btn pink block" style="margin-top:8px;" id="gBtn">Bhej do 🗞️</button>
+      </form>
+      <h2 style="font-size:22px;margin-top:22px;">On air abhi</h2>
+      <div id="gFeed"><p class="muted">Abhi tak koi breaking news nahi.</p></div>
+    </div>
+
+    <div class="pane hidden" id="pane-rishta">
+      <h2>Rishta <span class="serif">Pakka</span> 💘</h2>
+      <div id="rishta"></div>
+    </div>
+
+    <div class="pane hidden" id="pane-score">
+      <h2>Aura <span class="serif">leaderboard</span></h2>
+      <div class="card"><ol class="lb" id="lb"></ol></div>
+      <h2 style="font-size:24px;margin-top:22px;">7 <span class="serif">phere</span></h2>
+      <div class="card" id="phere"></div>
+    </div>
+
+    <p style="text-align:center;margin-top:28px;"><a class="btn ghost sm" href="/">💸 Real shagun do (NGO ke liye)</a></p>
+  </div>
+</div>
+<footer class="footer">Built by <b>SayIntro</b></footer>
+
+<script src="/config.js"></script>
+<script src="/assets/vendor/supabase-2.117.2.js"></script>
+<script src="/assets/app.js"></script>
+<script>
+(async function () {
+  const { C, $, $$, esc, toast, rpc, select, live, confetti, configured } = App;
+  const TEAM = { ladkiwale: 'Ladkiwale 💃', ladkewale: 'Ladkewale 🕺' };
+  $('#jTag').textContent = C.event.hashtag + ' · ' + C.event.venue;
+  $('#aTag').textContent = C.event.hashtag;
+  if (!configured) { $('#cfgWarn').innerHTML = '<div class="banner">⚙️ Supabase set nahi hai — config.js check karo.</div>'; }
+
+  const KEY = 'aksGuest';
+  let me = null;
+  try { me = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { me = null; }
+
+  if (me) {
+    try {
+      const g = await rpc('whoami', { gid: me.id, tok: me.token });
+      Object.assign(me, g);
+    } catch (e) {
+      if (/Session/.test(e.message)) { localStorage.removeItem(KEY); me = null; }
+    }
+  }
+  me ? startApp() : $('#joinView').classList.remove('hidden');
+
+  // ---------- JOIN ----------
+  $('#jHandle').addEventListener('input', (e) => { e.target.value = e.target.value.replace(/^@+/, '').replace(/\s/g, '').toLowerCase(); });
+  $('#joinForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = $('#joinBtn'); btn.disabled = true;
+    try {
+      me = await rpc('join_party', { p_name: $('#jName').value.trim(), p_handle: $('#jHandle').value.trim() });
+      localStorage.setItem(KEY, JSON.stringify(me));
+      $('#joinView').classList.add('hidden');
+      showReveal();
+    } catch (err) { toast(err.message, true); }
+    btn.disabled = false;
+  });
+
+  function showReveal() {
+    const el = document.createElement('div');
+    el.className = 'reveal';
+    el.innerHTML = `<div><div class="drum">Pandit ji team decide kar rahe hain... 🥁</div>
+      <div class="big"><span class="serif muted" style="font-size:.45em;display:block;">tum ho team</span><span class="t-${me.team}">${TEAM[me.team]}</span></div>
+      <button class="btn block" style="margin-top:28px;opacity:0;animation:zoom .4s 2.2s both;">Chalo party shuru 🎉</button></div>`;
+    document.body.appendChild(el);
+    setTimeout(() => confetti(50), 1500);
+    el.querySelector('button').addEventListener('click', () => { el.remove(); startApp(); });
+  }
+
+  // ---------- APP ----------
+  let tab = 'polls';
+  let state = { polls: [], guests: [], teams: [], phere: [], gossip: [], ev: null };
+  let myVotes = {};
+  let picks = null;          // my saved picks (array of ids)
+  let draft = new Set();     // picks being edited
+  let rishtaResult = null;
+  let search = '';
+
+  function startApp() {
+    $('#appView').classList.remove('hidden');
+    $('#meName').textContent = me.name;
+    $('#meTeam').className = 'team-pill team-' + me.team;
+    $('#meTeam').textContent = 'Team ' + TEAM[me.team];
+    $$('#tabs button').forEach((b) => b.addEventListener('click', () => setTab(b.dataset.tab)));
+    rpc('my_votes', { gid: me.id, tok: me.token }).then((rows) => { rows.forEach((r) => (myVotes[r.poll_id] = r.option_idx)); renderPolls(); }).catch(() => {});
+    live(['polls', 'guests', 'teams', 'phere', 'gossip', 'event_state'], refresh, 20000);
+    setInterval(renderRishta, 20000);   // picks can open on a schedule
+  }
+
+  function setTab(t) {
+    tab = t;
+    $$('#tabs button').forEach((b) => b.classList.toggle('on', b.dataset.tab === t));
+    $$('.pane').forEach((p) => p.classList.toggle('hidden', p.id !== 'pane-' + t));
+    if (t === 'polls') $('#dotPolls').classList.add('hidden');
+    if (t === 'rishta') renderRishta();
+  }
+
+  async function refresh() {
+    const [polls, guests, teams, phere, gossip, ev] = await Promise.all([
+      select('polls', (q) => q.order('created_at', { ascending: false }).limit(30)),
+      select('guests', (q) => q.order('aura', { ascending: false }).limit(2000)),
+      select('teams'),
+      select('phere', (q) => q.order('num')),
+      select('gossip', (q) => q.order('created_at', { ascending: false }).limit(15)),
+      select('event_state'),
+    ]);
+    const hadOpen = new Set(state.polls.filter((p) => p.status === 'open').map((p) => p.id));
+    state = { polls, guests, teams, phere, gossip, ev: ev[0] };
+    if (tab !== 'polls' && polls.some((p) => p.status === 'open' && !hadOpen.has(p.id) && myVotes[p.id] === undefined)) $('#dotPolls').classList.remove('hidden');
+    const meRow = guests.find((g) => g.id === me.id);
+    if (meRow) { me.aura = meRow.aura; $('#meAura').textContent = meRow.aura; }
+    renderScore(); renderPolls(); renderGossip(); renderRishta();
+  }
+
+  function teamTotals() {
+    const t = { ladkiwale: 0, ladkewale: 0 };
+    state.guests.forEach((g) => (t[g.team] += g.aura));
+    state.teams.forEach((x) => (t[x.name] += x.bonus));
+    return t;
+  }
+
+  function renderScore() {
+    const t = teamTotals();
+    $('#sGirls').textContent = t.ladkiwale.toLocaleString('en-IN');
+    $('#sBoys').textContent = t.ladkewale.toLocaleString('en-IN');
+    const top = state.guests.slice(0, 10);
+    const rank = state.guests.findIndex((g) => g.id === me.id) + 1;
+    $('#lb').innerHTML = top.map((g, i) => `<li><span class="mono" style="width:28px">${['👑','🥈','🥉'][i] || i + 1}</span>
+      <span class="nm">${esc(g.name)} <small class="t-${g.team}">@${esc(g.handle)}</small></span><b class="gold">${g.aura}</b></li>`).join('')
+      + (rank > 10 ? `<li><span class="mono" style="width:28px">${rank}</span><span class="nm">Tum 🫵</span><b class="gold">${me.aura}</b></li>` : '');
+    $('#phere').innerHTML = state.phere.map((p) => `<div class="phera"><span>${p.num}. ${esc(p.title)}</span>
+      <b class="${p.winner ? 't-' + p.winner : 'muted'}">${p.winner ? TEAM[p.winner] : '—'}</b></div>`).join('');
+  }
+
+  function renderPolls() {
+    const open = state.polls.filter((p) => p.status === 'open');
+    const closed = state.polls.filter((p) => p.status === 'closed').slice(0, 3);
+    if (!open.length && !closed.length) { $('#polls').innerHTML = '<p class="muted">Host jaldi poll daalega. Ruko zara, sabar karo 😌</p>'; return; }
+    $('#polls').innerHTML = [...open, ...closed].map((p) => {
+      const voted = myVotes[p.id];
+      const showRes = voted !== undefined || p.status === 'closed';
+      const total = p.counts.reduce((a, b) => a + b, 0) || 1;
+      const body = showRes
+        ? p.options.map((o, i) => `<div class="res"><div class="lab"><span class="${i === voted ? 'mine' : ''}">${esc(o)}${i === voted ? ' ✓' : ''}</span><span>${Math.round((p.counts[i] / total) * 100)}%</span></div>
+            <div class="bar"><i style="width:${(p.counts[i] / total) * 100}%"></i></div></div>`).join('')
+        : p.options.map((o, i) => `<button class="opt" data-poll="${p.id}" data-i="${i}">${esc(o)}</button>`).join('');
+      return `<div class="card poll">${p.status === 'closed' ? '<div class="closed-tag">POLL BAND · RESULTS</div>' : ''}<div class="q">${esc(p.question)}</div>${body}
+        ${showRes ? `<div class="mono muted" style="margin-top:8px;font-size:11px;">${p.counts.reduce((a, b) => a + b, 0)} votes</div>` : ''}</div>`;
+    }).join('');
+    $$('.opt').forEach((b) => b.addEventListener('click', async () => {
+      const pid = Number(b.dataset.poll), idx = Number(b.dataset.i);
+      $$(`.opt[data-poll="${pid}"]`).forEach((x) => (x.disabled = true));
+      try {
+        await rpc('cast_vote', { gid: me.id, tok: me.token, p_poll: pid, p_idx: idx });
+        myVotes[pid] = idx;
+        const p = state.polls.find((x) => x.id === pid); if (p) p.counts[idx]++;
+        toast('Vote ho gaya ✅');
+      } catch (err) {
+        toast(err.message, true);
+        if (/already/.test(err.message)) myVotes[pid] = -1;
+      }
+      renderPolls();
+    }));
+  }
+
+  // gossip
+  $('#gText').addEventListener('input', () => ($('#gCount').textContent = $('#gText').value.length));
+  $('#gForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = $('#gBtn'); btn.disabled = true;
+    try {
+      await rpc('send_gossip', { gid: me.id, tok: me.token, p_text: $('#gText').value });
+      $('#gText').value = ''; $('#gCount').textContent = '0';
+      toast('Gossip newsroom pahunch gaya 🗞️ Host approve karega');
+    } catch (err) { toast(err.message, true); }
+    setTimeout(() => (btn.disabled = false), 8000);   // tiny cooldown
+  });
+  function renderGossip() {
+    $('#gFeed').innerHTML = state.gossip.length ? state.gossip.map((g) => `<div class="ticker-item">${esc(g.text)}</div>`).join('') : '<p class="muted">Abhi tak koi breaking news nahi.</p>';
+  }
+
+  // ---------- RISHTA PAKKA ----------
+  function phase() {
+    const ev = state.ev;
+    if (!ev) return 'locked';
+    if (ev.picks_state === 'locked' && ev.picks_open_at && new Date(ev.picks_open_at) <= new Date()) return 'open';
+    return ev.picks_state;
+  }
+
+  async function renderRishta() {
+    const ph = phase();
+    $('#dotRishta').classList.toggle('hidden', ph === 'locked');
+    if (tab !== 'rishta') return;
+    const box = $('#rishta');
+
+    if (ph === 'locked') {
+      const at = state.ev && state.ev.picks_open_at ? new Date(state.ev.picks_open_at).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' }) : null;
+      box.innerHTML = `<div class="card"><div class="big" style="font-size:24px;font-weight:800;">Finale pe khulega 👀${at ? ' — ' + at + ' baje' : ''}</div>
+        <p class="muted">Jab khulega, tum max <b>3 log</b> chun sakte ho jinse dobara milna hai. Picks <b>private</b> hain — kisi ko nahi dikhenge, host ko bhi nahi.
+        Agar dono ne ek doosre ko chuna → <b class="pink">Rishta Pakka</b> 🔥 aur dono ko ek doosre ka Insta handle milega.</p></div>`;
+      return;
+    }
+
+    if (ph === 'revealed') {
+      if (!rishtaResult || rishtaResult.phase !== 'revealed') {
+        box.innerHTML = '<p class="muted">Pandit ji kundli mila rahe hain... 🔮</p>';
+        try { rishtaResult = await rpc('my_rishtas', { gid: me.id, tok: me.token }); } catch (e) { box.innerHTML = `<p class="muted">${esc(e.message)}</p>`; return; }
+        if (rishtaResult.matches.length) confetti(60, ['💘', '🔥', '✨', '💖', '🌸']);
+      }
+      const m = rishtaResult.matches;
+      box.innerHTML = m.length
+        ? `<div class="card match"><div style="font-size:54px;">🔥</div><div class="big">Bestie, the rishta is giving 🔥<br><span class="serif gold" style="font-weight:400;">Rishta pakka</span></div>
+            <p class="muted">${m.length === 1 ? 'Tum dono ne ek doosre ko chuna. DM karo, scene banao:' : `${m.length} logon ne tumhe wapas chuna! Main character spotted:`}</p>
+            ${m.map((x) => `<a class="h" href="https://instagram.com/${encodeURIComponent(x.handle)}" target="_blank" rel="noopener">${esc(x.name)} · <span class="pink">@${esc(x.handle)}</span></a>`).join('')}</div>`
+        : `<div class="card match" style="background:var(--card);border-color:var(--line);"><div style="font-size:64px;">🍛</div>
+            <div class="big">Aaj sirf khaana hi tumhara soulmate tha 🍛</div><p class="muted">Koi baat nahi. Agle event pe phir try karna. Biryani kabhi ghost nahi karti.</p></div>`;
+      return;
+    }
+
+    // open
+    rishtaResult = null;
+    if (picks === null) {
+      try { picks = await rpc('my_picks', { gid: me.id, tok: me.token }); draft = new Set(picks); } catch (e) { picks = []; }
+    }
+    if (box.querySelector('#rSearch')) { renderGuestList(); return; }   // keep focus while typing
+    box.innerHTML = `<div class="card" style="margin-bottom:10px;"><b>Picks khul gaye! 💘</b>
+        <p class="muted" style="margin:6px 0 0;font-size:14px;">Max 3 log chuno. Private hai — sirf mutual hone pe dono ko pata chalega, finale reveal ke baad.</p></div>
+      <input class="input" id="rSearch" placeholder="Naam ya @handle search karo..." autocomplete="off">
+      <div class="g-list" id="gList"></div>
+      <div class="save-bar"><button class="btn pink block" id="rSave">Picks save karo (<span id="rN">0</span>/3)</button></div>`;
+    $('#rSearch').addEventListener('input', (e) => { search = e.target.value.trim().toLowerCase().replace(/^@/, ''); renderGuestList(); });
+    $('#rSave').addEventListener('click', async () => {
+      try {
+        await rpc('set_picks', { gid: me.id, tok: me.token, p_picked: [...draft] });
+        picks = [...draft];
+        toast(draft.size ? 'Picks saved 🤞 Reveal ka wait karo' : 'Picks clear ho gaye');
+      } catch (e) { toast(e.message, true); }
+    });
+    renderGuestList();
+  }
+
+  function renderGuestList() {
+    const list = state.guests
+      .filter((g) => g.id !== me.id)
+      .filter((g) => !search || g.name.toLowerCase().includes(search) || g.handle.includes(search))
+      .sort((a, b) => (draft.has(b.id) - draft.has(a.id)) || a.name.localeCompare(b.name))
+      .slice(0, 150);
+    $('#gList').innerHTML = list.length ? list.map((g) => `<div class="g-row ${draft.has(g.id) ? 'on' : ''}" data-id="${g.id}">
+      <div class="av t-${g.team}">${esc(g.name[0].toUpperCase())}</div><div class="grow"><b>${esc(g.name)}</b><small>@${esc(g.handle)}</small></div><div class="tick"></div></div>`).join('')
+      : '<p class="muted">Koi nahi mila 🤷</p>';
+    $('#rN').textContent = draft.size;
+    $$('#gList .g-row').forEach((r) => r.addEventListener('click', () => {
+      const id = r.dataset.id;
+      if (draft.has(id)) draft.delete(id);
+      else if (draft.size >= 3) { toast('Max 3 hi chun sakte ho bestie'); return; }
+      else draft.add(id);
+      r.classList.toggle('on', draft.has(id));
+      $('#rN').textContent = draft.size;
+    }));
+  }
+})();
+</script>
+</body>
+</html>

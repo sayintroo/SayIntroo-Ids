@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shagun Stage · #AanshKiShaadi</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📽️</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/base.css">
+<style>
+  html, body { height: 100%; overflow: hidden; }
+  body { font-size: 1.6vh; }
+  .stage { height: 100vh; display: grid; grid-template-columns: 1.35fr 1fr; grid-template-rows: auto 1fr auto; gap: 2.4vh 3vw; padding: 3.5vh 3.5vw; }
+  .head { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; }
+  .head .tag { font-family: var(--serif); font-style: italic; font-size: 4.4vh; color: var(--pink); }
+  .head .sp { text-align: right; font-family: var(--mono); font-size: 1.5vh; letter-spacing: 0.2em; color: var(--muted); }
+  .head .sp b { display: block; font-family: var(--serif); font-weight: 400; letter-spacing: 0; font-size: 3vh; color: var(--gold-2); }
+
+  .left { display: flex; flex-direction: column; justify-content: center; }
+  .kicker { font-family: var(--mono); font-size: 2vh; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; }
+  .total { font-size: 17vh; font-weight: 800; letter-spacing: -0.05em; line-height: 0.95; margin: 1vh 0 2vh; text-shadow: 0 0 6vh rgba(245, 196, 94, 0.35); }
+  .bar { height: 2.4vh; }
+  .meta { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 2.1vh; color: var(--muted); margin-top: 1.4vh; }
+  .title { font-size: 7vh; font-weight: 800; letter-spacing: -0.03em; line-height: 1; margin-top: 4vh; }
+  .title .serif { color: var(--gold); }
+
+  .right { display: flex; flex-direction: column; gap: 2vh; min-height: 0; }
+  .lb { flex: 1; padding: 2.4vh 2vw; display: flex; flex-direction: column; }
+  .lb h3 { margin: 0 0 1.4vh; font-size: 3.4vh; }
+  .lb ol { list-style: none; margin: 0; padding: 0; flex: 1; display: flex; flex-direction: column; gap: 2.2vh; }
+  .lb li { display: flex; align-items: center; gap: 1.4vw; font-size: 3.4vh; padding: 0.6vh 0; transition: transform 0.4s; }
+  .lb .rk { width: 5vh; text-align: center; }
+  .lb .nm { flex: 1; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lb .am { font-family: var(--mono); color: var(--lime); font-size: 3vh; }
+  .scan { display: flex; gap: 1.6vw; align-items: center; padding: 1.8vh 1.6vw; }
+  .scan canvas { width: 15vh; height: 15vh; border-radius: 1.2vh; flex: none; }
+  .scan b { display: block; font-size: 3vh; line-height: 1.1; }
+  .scan span { font-family: var(--mono); color: var(--muted); font-size: 1.7vh; }
+
+  .quote { grid-column: 1 / -1; text-align: center; min-height: 12vh; display: flex; flex-direction: column; justify-content: center; }
+  .quote .q { font-family: var(--serif); font-style: italic; font-size: 5vh; line-height: 1.15; transition: opacity 0.6s, transform 0.6s; }
+  .quote .by { font-family: var(--mono); color: var(--pink); font-size: 2vh; margin-top: 1vh; letter-spacing: 0.15em; transition: opacity 0.6s; }
+  .quote.fade .q, .quote.fade .by { opacity: 0; transform: translateY(1vh); }
+
+  .pop { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(11, 6, 16, 0.75); z-index: 40; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+  .pop.show { opacity: 1; }
+  .pop .box { text-align: center; transform: scale(0.8); transition: transform 0.4s cubic-bezier(.2,1.6,.4,1); }
+  .pop.show .box { transform: scale(1); }
+  .pop .box .who { font-size: 9vh; font-weight: 800; letter-spacing: -0.03em; }
+  .pop .box .amt { font-size: 13vh; font-weight: 800; color: var(--gold); line-height: 1; }
+  .pop .box .msg { font-family: var(--serif); font-style: italic; font-size: 4vh; color: var(--muted); margin-top: 2vh; }
+
+  .fs { position: fixed; right: 12px; bottom: 12px; opacity: 0.25; z-index: 50; }
+  .fs:hover { opacity: 1; }
+  .foot { position: fixed; left: 3.5vw; bottom: 1.2vh; font-family: var(--mono); font-size: 1.3vh; color: var(--muted); letter-spacing: 0.15em; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="head">
+    <div class="tag" id="tag"></div>
+    <div class="sp">SPONSORED BY<b id="sp"></b></div>
+  </div>
+  <div class="left">
+    <div class="kicker"><span class="live-dot"></span>&nbsp; Live shagun counter</div>
+    <div class="total" id="total">₹0</div>
+    <div class="bar"><i id="bar"></i></div>
+    <div class="meta"><span id="givers">0 shagun-givers</span><span id="goal"></span></div>
+    <div class="title">Fake shaadi. <span class="serif">Real shagun.</span></div>
+    <div class="muted" style="font-size:2.4vh;margin-top:1vh;">Saara shagun → <b class="lime" id="ngo"></b></div>
+  </div>
+  <div class="right">
+    <div class="card lb"><h3>Top 5 <span class="serif gold">shagun sultans</span> 👑</h3><ol id="lb"></ol></div>
+    <div class="card scan"><div id="qr"></div><div><b>Scan karo,<br>shagun do 💸</b><span id="url"></span></div></div>
+  </div>
+  <div class="quote" id="quote"><div class="q" id="q"></div><div class="by" id="by"></div></div>
+</div>
+<div class="pop" id="pop"><div class="box"><div class="mono gold" style="font-size:2.4vh;letter-spacing:.3em;">NAYA SHAGUN AAYA 🎉</div><div class="who" id="pWho"></div><div class="amt" id="pAmt"></div><div class="msg" id="pMsg"></div></div></div>
+<button class="btn sm ghost fs" id="fs">⛶ Fullscreen</button>
+<div class="foot">BUILT BY SAYINTRO</div>
+
+<script src="/config.js"></script>
+<script src="/assets/vendor/supabase-2.117.2.js"></script>
+<script src="/assets/vendor/qrcode-1.4.4.js"></script>
+<script src="/assets/app.js"></script>
+<script>
+(function () {
+  const { C, $, esc, inr, countTo, qrCanvas, select, live, confetti } = App;
+  $('#tag').textContent = C.event.hashtag;
+  $('#sp').textContent = C.sponsors.title.name;
+  $('#ngo').textContent = C.ngo.name;
+  $('#goal').textContent = 'Goal ' + inr(C.goal);
+  const pageUrl = location.origin + '/';
+  $('#url').textContent = pageUrl.replace(/^https?:\/\//, '');
+  $('#qr').appendChild(qrCanvas(pageUrl, 400, '#0b0610', '#fbf3e4'));
+  $('#fs').addEventListener('click', () => document.documentElement.requestFullscreen && document.documentElement.requestFullscreen());
+
+  let quotes = C.defaultAashirwads.map((q) => ({ message: q, name: '' }));
+  let qi = 0;
+  function rotate() {
+    const box = $('#quote');
+    box.classList.add('fade');
+    setTimeout(() => {
+      const item = quotes[qi++ % quotes.length];
+      $('#q').textContent = '“' + item.message + '”';
+      $('#by').textContent = item.name ? '— ' + item.name : '';
+      box.classList.remove('fade');
+    }, 600);
+  }
+  rotate();
+  setInterval(rotate, 7000);
+
+  function aggregate(rows) {
+    const map = new Map();
+    rows.forEach((r) => {
+      const key = r.name.trim().replace(/^@+/, '').toLowerCase();
+      const cur = map.get(key) || { name: r.name.trim(), amount: 0 };
+      cur.amount += r.amount; map.set(key, cur);
+    });
+    return [...map.values()].sort((a, b) => b.amount - a.amount);
+  }
+
+  // celebrate each new donation
+  const queue = [];
+  let showing = false;
+  live.onEvent = (table, p) => { if (table === 'donations' && p.eventType === 'INSERT') { queue.push(p.new); next(); } };
+  function next() {
+    if (showing || !queue.length) return;
+    showing = true;
+    const d = queue.shift();
+    $('#pWho').textContent = d.name;
+    $('#pAmt').textContent = inr(d.amount);
+    $('#pMsg').textContent = d.message ? '“' + d.message + '”' : '';
+    $('#pop').classList.add('show');
+    confetti(50);
+    setTimeout(() => { $('#pop').classList.remove('show'); setTimeout(() => { showing = false; next(); }, 500); }, 4200);
+  }
+
+  live(['donations', 'aashirwads'], async () => {
+    const [rows, aash] = await Promise.all([
+      select('donations', (q) => q.order('created_at', { ascending: false }).limit(5000)),
+      select('aashirwads', (q) => q.order('created_at', { ascending: false }).limit(100)),
+    ]);
+    const total = rows.reduce((s, r) => s + r.amount, 0);
+    countTo($('#total'), total, inr, 1800);
+    $('#bar').style.width = Math.min(100, (total / C.goal) * 100) + '%';
+    const people = aggregate(rows);
+    $('#givers').textContent = `${people.length} shagun-giver${people.length === 1 ? '' : 's'}`;
+    $('#lb').innerHTML = people.length ? people.slice(0, 5).map((p, i) => `
+      <li><span class="rk">${['👑', '🥈', '🥉', '4', '5'][i]}</span><span class="nm">${esc(p.name)}</span><span class="am">${inr(p.amount)}</span></li>`).join('')
+      : '<li class="muted">Pehla shagun kaun dega? 👀</li>';
+    const fresh = [
+      ...aash.map((a) => ({ message: a.message, name: a.name })),
+      ...rows.filter((r) => r.message).slice(0, 60).map((r) => ({ message: r.message, name: r.name })),
+    ];
+    if (fresh.length) quotes = fresh;
+  }, 20000);
+})();
+</script>
+</body>
+</html>

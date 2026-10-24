@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shagun Admin · #AanshKiShaadi</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔒</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/base.css">
+<style>
+  h1 { font-size: 34px; margin: 18px 0 2px; letter-spacing: -0.02em; }
+  h2 { font-size: 22px; margin: 26px 0 10px; }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .stats .card { padding: 14px; }
+  .stats b { display: block; font-size: 28px; letter-spacing: -0.02em; }
+  .quick { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .row .grow { flex: 1; min-width: 0; }
+  .row .nm { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .row small { color: var(--muted); display: block; }
+  .x { background: none; border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; cursor: pointer; }
+  .ok { border-color: var(--lime); color: var(--lime); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="mono gold" style="margin-top:18px;">Volunteer desk · <span class="live-dot"></span> live</div>
+  <h1>Shagun <span class="serif gold">entry</span></h1>
+  <div id="cfgWarn"></div>
+
+  <div class="stats">
+    <div class="card"><span class="mono muted">Total</span><b id="sTotal">₹0</b></div>
+    <div class="card"><span class="mono muted">Entries</span><b id="sCount">0</b></div>
+  </div>
+
+  <form class="card" id="form" style="margin-top:14px;">
+    <label class="lbl" for="name">Naam ya @insta handle</label>
+    <input class="input" id="name" maxlength="60" required placeholder="e.g. @riya.vibes ya Anonymous" autocomplete="off">
+    <label class="lbl" for="amt">Amount (₹)</label>
+    <input class="input" id="amt" type="number" inputmode="numeric" min="1" required placeholder="501">
+    <div class="quick" id="quick"></div>
+    <label class="lbl" for="msg">Aashirwad (optional, stage pe dikhega)</label>
+    <input class="input" id="msg" maxlength="200" placeholder="Jeete raho, red flags kam ho">
+    <button class="btn block" style="margin-top:14px;" id="addBtn">Add karo ✅</button>
+    <p class="muted" style="font-size:13px;margin:10px 0 0;">Tip: same naam/handle dobara daaloge toh leaderboard pe total jud jayega.</p>
+  </form>
+
+  <h2>Pending aashirwads <span class="muted" id="pendCount"></span></h2>
+  <div class="card" id="pending"><span class="muted">Koi pending nahi 🙌</span></div>
+
+  <h2>Recent entries</h2>
+  <div class="card" id="recent"><span class="muted">Abhi tak kuch nahi.</span></div>
+
+  <h2>Danger zone ⚠️</h2>
+  <div class="card">
+    <p class="muted" style="margin:0 0 10px;">Testing ke baad, event se pehle saari test entries hatao.</p>
+    <button class="btn ghost" id="reset" type="button">Reset all shagun data</button>
+  </div>
+
+  <p class="muted" style="text-align:center;margin-top:24px;"><a href="/">Shagun page</a> · <a href="/stage">Stage screen</a></p>
+</div>
+<footer class="footer">Built by <b>SayIntro</b></footer>
+
+<script src="/config.js"></script>
+<script src="/assets/vendor/supabase-2.117.2.js"></script>
+<script src="/assets/app.js"></script>
+<script>
+(async function () {
+  const { C, $, $$, esc, inr, toast, rpc, select, live, passwordGate, configured } = App;
+  if (!configured) { $('#cfgWarn').innerHTML = '<div class="banner">⚙️ Supabase set nahi hai — config.js mein URL aur anon key daalo.</div>'; return; }
+
+  const pw = await passwordGate('shagun_admin', 'shagunPw');
+
+  $('#quick').innerHTML = C.tiers.map((t) => `<button type="button" class="chip" data-a="${t.amount}">${inr(t.amount)}</button>`).join('');
+  $$('#quick .chip').forEach((c) => c.addEventListener('click', () => { $('#amt').value = c.dataset.a; }));
+
+  $('#form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = $('#addBtn'); btn.disabled = true;
+    try {
+      await rpc('add_donation', { pw, p_name: $('#name').value.trim(), p_amount: Math.floor(Number($('#amt').value)), p_message: $('#msg').value.trim() || null });
+      toast(`${inr($('#amt').value)} added for ${$('#name').value.trim()} 🎉`);
+      $('#form').reset(); $('#name').focus();
+      refresh();
+    } catch (err) { toast(err.message, true); }
+    btn.disabled = false;
+  });
+
+  async function refresh() {
+    const rows = await select('donations', (q) => q.order('created_at', { ascending: false }).limit(5000));
+    $('#sTotal').textContent = inr(rows.reduce((s, r) => s + r.amount, 0));
+    $('#sCount').textContent = rows.length;
+    $('#recent').innerHTML = rows.length ? rows.slice(0, 40).map((r) => `
+      <div class="row"><div class="grow"><div class="nm">${esc(r.name)} · <span class="lime">${inr(r.amount)}</span></div>
+      <small>${new Date(r.created_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}${r.message ? ' · “' + esc(r.message) + '”' : ''}</small></div>
+      <button class="x" data-del="${r.id}" title="Delete">🗑️</button></div>`).join('') : '<span class="muted">Abhi tak kuch nahi.</span>';
+    $$('[data-del]').forEach((b) => b.addEventListener('click', async () => {
+      if (!confirm('Ye entry delete karni hai?')) return;
+      try { await rpc('delete_donation', { pw, p_id: Number(b.dataset.del) }); toast('Deleted'); refresh(); } catch (err) { toast(err.message, true); }
+    }));
+
+    const pend = await rpc('admin_pending_aashirwads', { pw });
+    $('#pendCount').textContent = pend.length ? `(${pend.length})` : '';
+    $('#pending').innerHTML = pend.length ? pend.map((a) => `
+      <div class="row"><div class="grow"><div>“${esc(a.message)}”</div><small>— ${esc(a.name)}</small></div>
+      <button class="x ok" data-mod="${a.id}" data-ok="1">✅</button><button class="x" data-mod="${a.id}" data-ok="">❌</button></div>`).join('') : '<span class="muted">Koi pending nahi 🙌</span>';
+    $$('[data-mod]').forEach((b) => b.addEventListener('click', async () => {
+      try { await rpc('moderate_aashirwad', { pw, p_id: Number(b.dataset.mod), p_approve: !!b.dataset.ok }); refresh(); } catch (err) { toast(err.message, true); }
+    }));
+  }
+  live(['donations', 'aashirwads'], refresh, 10000);
+
+  $('#reset').addEventListener('click', async () => {
+    if (prompt('Saari donations + aashirwads delete ho jayengi. Type karo: RESET') !== 'RESET') return;
+    try { await rpc('reset_shagun', { pw }); toast('Sab saaf ✨'); refresh(); } catch (err) { toast(err.message, true); }
+  });
+})();
+</script>
+</body>
+</html>

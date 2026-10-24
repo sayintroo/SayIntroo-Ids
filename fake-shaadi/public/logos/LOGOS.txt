@@ -1,0 +1,13 @@
+Drop sponsor logos here with EXACTLY these file names (PNG, transparent background looks best).
+A missing file is fine: the sponsor's name shows as text instead.
+
+aansh.png        Aansh Hospital & IVF Centre   (title sponsor)
+imperial.png     Imperial
+communite.png    Communite CP                  (already added, cropped from the Insta DP)
+palangwars.png   Palangwar's Music
+ravista.png      Ravista Backyard
+kiyaanz.png      Kiyaanz
+elevate.png      Elevate
+obsess.png       Obsess
+
+Different file name or .jpg/.svg? Change the "logo" path in public/config.js.
