@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Baraat Live Stage · #AanshKiShaadi</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📽️</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/base.css">
+<link rel="stylesheet" href="/assets/party.css">
+<style>
+  html, body { height: 100%; overflow: hidden; }
+  .stage { height: 100vh; display: grid; grid-template-rows: auto 1fr auto; gap: 2vh; padding: 3vh 2.6vw 0; }
+  .head { display: flex; align-items: center; justify-content: space-between; gap: 2vw; }
+  .head h1 { margin: 0; font-size: 6vh; letter-spacing: -0.03em; line-height: 1; }
+  .head h1 .serif { color: var(--gold); }
+  .head .sub { font-family: var(--mono); color: var(--muted); font-size: 1.7vh; letter-spacing: 0.2em; }
+  .head .right { display: flex; align-items: center; gap: 1.6vw; }
+  .badge { padding: 1.2vh 1.4vw; border-radius: 2vh; background: rgba(255, 79, 154, 0.18); border: 1px solid rgba(255, 79, 154, 0.5); text-align: center; }
+  .badge b { display: block; font-size: 4.4vh; line-height: 1; }
+  .badge span { font-family: var(--mono); font-size: 1.4vh; letter-spacing: 0.15em; color: var(--muted); }
+  .join { display: flex; gap: 1vw; align-items: center; }
+  .join canvas { width: 13vh; height: 13vh; border-radius: 1vh; }
+  .join b { display: block; font-size: 2.4vh; line-height: 1.1; }
+  .join span { font-family: var(--mono); font-size: 1.4vh; color: var(--muted); }
+
+  .grid { display: grid; grid-template-columns: 1.1fr 1.2fr 1fr; gap: 1.6vw; min-height: 0; }
+  .panel { padding: 2.4vh 1.6vw; display: flex; flex-direction: column; min-height: 0; }
+  .panel h2 { margin: 0 0 1.6vh; font-size: 3vh; font-family: var(--mono); letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); font-weight: 700; }
+
+  .teams { display: grid; grid-template-columns: 1fr 1fr; gap: 1vw; text-align: center; }
+  .teams .nm { font-size: 2.8vh; font-weight: 800; }
+  .teams .sc { font-size: 10vh; font-weight: 800; letter-spacing: -0.05em; line-height: 1; margin: 0.6vh 0; }
+  .teams .ct { font-family: var(--mono); color: var(--muted); font-size: 1.6vh; }
+  .tug { display: flex; height: 2.6vh; border-radius: 99px; overflow: hidden; margin: 2.4vh 0; background: var(--card-2); }
+  .tug i { display: block; transition: flex-grow 1s cubic-bezier(.2,.8,.2,1); }
+  .phere { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.6vw; }
+  .phere div { aspect-ratio: 1; border-radius: 50%; border: 2px dashed var(--line); display: grid; place-items: center; font-weight: 800; font-size: 2.4vh; }
+  .phere .ladkiwale { background: var(--girls); border: 0; color: #fff; }
+  .phere .ladkewale { background: var(--boys); border: 0; color: #1b0f05; }
+  .phere-lbl { font-family: var(--mono); color: var(--muted); font-size: 1.5vh; letter-spacing: 0.15em; margin: auto 0 1.2vh; text-align: center; }
+
+  .pq { font-size: 4.2vh; font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 2vh; }
+  .popt { margin-bottom: 1.8vh; }
+  .popt .lab { display: flex; justify-content: space-between; font-size: 2.8vh; font-weight: 700; margin-bottom: 0.6vh; }
+  .popt .bar { height: 3.2vh; }
+  .popt.lead .lab span:first-child::after { content: ' 👑'; }
+
+  .lb { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.3vh; flex: 1; }
+  .lb li { display: flex; align-items: center; gap: 0.8vw; font-size: 2.6vh; padding: 0.3vh 0; }
+  .lb .rk { width: 3.6vh; text-align: center; font-family: var(--mono); color: var(--muted); }
+  .lb .nm { flex: 1; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lb .tm { width: 1.2vh; height: 1.2vh; border-radius: 50%; flex: none; }
+  .lb b { color: var(--gold); font-family: var(--mono); }
+
+  .ticker { display: flex; align-items: stretch; height: 7.5vh; margin: 0 -2.6vw; background: var(--red); overflow: hidden; }
+  .ticker .lbl { flex: none; background: var(--gold); color: #1b0f05; font-weight: 800; font-size: 2.6vh; display: flex; align-items: center; padding: 0 2vw; letter-spacing: 0.02em; z-index: 1; }
+  .ticker .lbl::after { content: ''; }
+  .ticker .track { flex: 1; overflow: hidden; display: flex; align-items: center; }
+  .ticker .move { display: inline-flex; white-space: nowrap; font-size: 3.2vh; font-weight: 700; animation: scroll linear infinite; }
+  .ticker .move span { padding: 0 3vw; }
+  .ticker .move span::before { content: '◆  '; color: var(--gold); }
+  @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  .aura-pop { position: fixed; left: 50%; top: 40%; transform: translate(-50%, -50%) scale(0.6); opacity: 0; z-index: 30; text-align: center; padding: 3vh 4vw; border-radius: 3vh;
+    background: rgba(13, 4, 5, 0.92); border: 2px solid var(--gold); box-shadow: 0 0 10vh rgba(245, 196, 94, 0.4); transition: all 0.35s cubic-bezier(.2,1.6,.4,1); }
+  .aura-pop.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  .aura-pop .pts { font-size: 14vh; font-weight: 800; line-height: 1; }
+  .aura-pop .who { font-size: 5vh; font-weight: 800; }
+  .aura-pop .why { font-family: var(--serif); font-style: italic; font-size: 4vh; color: var(--muted); }
+  .fs { position: fixed; right: 10px; top: 10px; opacity: 0.2; z-index: 50; }
+  .fs:hover { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="head">
+    <div><div class="sub" id="tag"></div><h1>Baraat <span class="serif">Live</span> 🔴</h1></div>
+    <div class="right">
+      <div class="badge" id="rBadge"><b id="rNum">💘</b><span id="rLbl">RISHTA PAKKA</span></div>
+      <div class="join"><div id="qr"></div><div><b>Scan karo,<br>team pao 💃🕺</b><span id="url"></span></div></div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card panel">
+      <h2>Team scoreboard</h2>
+      <div class="teams">
+        <div><div class="nm t-ladkiwale">Ladkiwale 💃</div><div class="sc t-ladkiwale" id="sG">0</div><div class="ct" id="cG">0 log</div></div>
+        <div><div class="nm t-ladkewale">Ladkewale 🕺</div><div class="sc t-ladkewale" id="sB">0</div><div class="ct" id="cB">0 log</div></div>
+      </div>
+      <div class="tug"><i id="tugG" style="background:var(--girls);flex-grow:1"></i><i id="tugB" style="background:var(--boys);flex-grow:1"></i></div>
+      <div class="phere-lbl" id="phLbl">7 PHERE</div>
+      <div class="phere" id="phere"></div>
+    </div>
+    <div class="card panel">
+      <h2>🗳️ Live poll</h2>
+      <div id="poll"><div class="pq muted">Poll aane wala hai... phone ready rakho 📱</div></div>
+    </div>
+    <div class="card panel">
+      <h2>⚡ Top 10 Aura</h2>
+      <ol class="lb" id="lb"></ol>
+    </div>
+  </div>
+
+  <div class="ticker"><div class="lbl">📰 BARAAT BREAKING NEWS</div><div class="track"><div class="move" id="move"></div></div></div>
+</div>
+<div class="aura-pop" id="pop"><div class="pts" id="popPts"></div><div class="who" id="popWho"></div><div class="why" id="popWhy"></div></div>
+<button class="btn sm ghost fs" id="fs">⛶</button>
+
+<script src="/config.js"></script>
+<script src="/assets/vendor/supabase-2.117.2.js"></script>
+<script src="/assets/vendor/qrcode-1.4.4.js"></script>
+<script src="/assets/app.js"></script>
+<script>
+(function () {
+  const { C, $, esc, select, rpc, live, countTo, qrCanvas, confetti } = App;
+  const TEAM = { ladkiwale: 'Ladkiwale 💃', ladkewale: 'Ladkewale 🕺' };
+  $('#tag').textContent = C.event.hashtag.toUpperCase() + ' · ' + C.event.venue.toUpperCase();
+  const joinUrl = location.origin + '/party';
+  $('#url').textContent = joinUrl.replace(/^https?:\/\//, '');
+  $('#qr').appendChild(qrCanvas(joinUrl, 360, '#0d0405', '#fbf3e4'));
+  $('#fs').addEventListener('click', () => document.documentElement.requestFullscreen && document.documentElement.requestFullscreen());
+
+  let guests = [];
+  const FALLBACK = ['Shaadi mein swagat hai! QR scan karo aur team join karo', 'Gossip bhejo — sabse spicy wali stage pe aayegi', 'Aura points kamao: naacho, gaao, phoopha ji ko manao'];
+  let lastTicker = '';
+
+  // aura celebration popups
+  const queue = []; let busy = false;
+  live.onEvent = (table, p) => { if (table === 'aura_log' && p.eventType === 'INSERT') { queue.push(p.new); nextPop(); } };
+  function nextPop() {
+    if (busy || !queue.length) return;
+    busy = true;
+    const a = queue.shift();
+    const g = a.guest_id && guests.find((x) => x.id === a.guest_id);
+    $('#popPts').textContent = (a.points > 0 ? '+' : '') + a.points + ' ⚡';
+    $('#popPts').style.color = a.points > 0 ? 'var(--lime)' : 'var(--red-2)';
+    $('#popWho').textContent = g ? `${g.name} (@${g.handle})` : 'Team ' + (TEAM[a.team] || '');
+    $('#popWhy').textContent = a.reason ? '“' + a.reason + '”' : '';
+    $('#pop').classList.add('show');
+    if (a.points >= 100) confetti(a.points >= 500 ? 70 : 30);
+    setTimeout(() => { $('#pop').classList.remove('show'); setTimeout(() => { busy = false; nextPop(); }, 400); }, 3500);
+  }
+
+  async function refresh() {
+    const [g, teams, phere, polls, gossip, rs] = await Promise.all([
+      select('guests', (q) => q.order('aura', { ascending: false }).limit(3000)),
+      select('teams'),
+      select('phere', (q) => q.order('num')),
+      select('polls', (q) => q.order('created_at', { ascending: false }).limit(5)),
+      select('gossip', (q) => q.order('created_at', { ascending: false }).limit(25)),
+      rpc('rishta_stats').catch(() => null),
+    ]);
+    guests = g;
+
+    // teams
+    const t = { ladkiwale: 0, ladkewale: 0 }, n = { ladkiwale: 0, ladkewale: 0 };
+    g.forEach((x) => { t[x.team] += x.aura; n[x.team]++; });
+    teams.forEach((x) => (t[x.name] += x.bonus));
+    countTo($('#sG'), t.ladkiwale); countTo($('#sB'), t.ladkewale);
+    $('#cG').textContent = n.ladkiwale + ' log'; $('#cB').textContent = n.ladkewale + ' log';
+    const pos = (v) => Math.max(1, v);
+    $('#tugG').style.flexGrow = pos(t.ladkiwale); $('#tugB').style.flexGrow = pos(t.ladkewale);
+    $('#phere').innerHTML = phere.map((p) => `<div class="${p.winner || ''}" title="${esc(p.title)}">${p.num}</div>`).join('');
+    const pw = { ladkiwale: phere.filter((p) => p.winner === 'ladkiwale').length, ladkewale: phere.filter((p) => p.winner === 'ladkewale').length };
+    $('#phLbl').textContent = `7 PHERE · 💃 ${pw.ladkiwale} – ${pw.ladkewale} 🕺`;
+
+    // poll: latest open, else latest closed
+    const p = polls.find((x) => x.status === 'open') || polls[0];
+    if (p) {
+      const total = p.counts.reduce((a, b) => a + b, 0);
+      const max = Math.max(...p.counts);
+      $('#poll').innerHTML = `<div class="pq">${esc(p.question)}</div>` + p.options.map((o, i) => `
+        <div class="popt ${total && p.counts[i] === max ? 'lead' : ''}"><div class="lab"><span>${esc(o)}</span><span>${total ? Math.round((p.counts[i] / total) * 100) : 0}%</span></div>
+        <div class="bar"><i style="width:${total ? (p.counts[i] / total) * 100 : 0}%"></i></div></div>`).join('')
+        + `<div class="mono muted" style="margin-top:auto;font-size:1.8vh;">${total} votes · ${p.status === 'open' ? '<span class="lime">● voting live — phone pe vote karo</span>' : 'poll band'}</div>`;
+    }
+
+    // leaderboard
+    $('#lb').innerHTML = g.slice(0, 10).map((x, i) => `<li><span class="rk">${['👑', '🥈', '🥉'][i] || i + 1}</span>
+      <span class="tm" style="background:var(--${x.team === 'ladkiwale' ? 'girls' : 'boys'})"></span>
+      <span class="nm">${esc(x.name)}</span><b>${x.aura}</b></li>`).join('') || '<li class="muted">Aura kamao, naam chamkao ✨</li>';
+
+    // rishta badge: picks count while open, total pakke after reveal, never names
+    if (rs && rs.phase === 'revealed') { $('#rNum').textContent = '💘 ' + rs.pakke; $('#rLbl').textContent = 'RISHTE PAKKE'; }
+    else if (rs && rs.phase === 'open') { $('#rNum').textContent = '💌 ' + rs.pickers; $('#rLbl').textContent = 'PICKS DAALE · RISHTA PAKKA OPEN'; }
+    else { $('#rNum').textContent = '💘 soon'; $('#rLbl').textContent = 'RISHTA PAKKA · FINALE'; }
+
+    // ticker
+    const items = gossip.length ? gossip.map((x) => x.text) : FALLBACK;
+    const key = items.join('|');
+    if (key !== lastTicker) {
+      lastTicker = key;
+      const html = items.map((s) => `<span>${esc(s)}</span>`).join('');
+      const mv = $('#move');
+      mv.innerHTML = html + html;   // doubled for a seamless loop
+      mv.style.animationDuration = Math.max(20, items.join(' ').length * 0.18) + 's';
+    }
+  }
+  live(['guests', 'teams', 'phere', 'polls', 'gossip', 'aura_log', 'event_state'], refresh, 10000);
+})();
+</script>
+</body>
+</html>

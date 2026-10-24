@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Host Panel · #AanshKiShaadi</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎛️</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/base.css">
+<link rel="stylesheet" href="/assets/party.css">
+<style>
+  h1 { font-size: 32px; margin: 16px 0 0; letter-spacing: -0.02em; }
+  h3 { margin: 18px 0 8px; font-size: 18px; }
+  .row { display: flex; align-items: center; gap: 8px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .row .grow { flex: 1; min-width: 0; }
+  .row small { color: var(--muted); display: block; }
+  .x { background: none; border: 1px solid var(--line); border-radius: 10px; padding: 7px 10px; cursor: pointer; font-size: 14px; flex: none; }
+  .x.ok { border-color: var(--lime); color: var(--lime); }
+  .x.on { background: var(--gold); color: #1b0f05; border-color: var(--gold); }
+  .pts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
+  .pts .btn { padding: 14px 4px; }
+  .neg { background: var(--red) !important; color: #fff !important; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .target { max-height: 220px; overflow-y: auto; margin-top: 8px; }
+  .target .row { cursor: pointer; padding: 8px 6px; border-radius: 10px; }
+  .target .row.sel { background: rgba(245, 196, 94, 0.18); }
+  .stat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .stat .card { padding: 12px; text-align: center; }
+  .stat b { display: block; font-size: 26px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="mono gold" style="margin-top:16px;">Host control room · <span class="live-dot"></span></div>
+  <h1>Baraat <span class="serif gold">control</span> 🎛️</h1>
+  <div id="cfgWarn"></div>
+
+  <div class="tabs" id="tabs">
+    <button data-tab="aura" class="on">⚡ Aura</button>
+    <button data-tab="polls">🗳️ Polls</button>
+    <button data-tab="gossip">📰 Gossip <span id="gBadge"></span></button>
+    <button data-tab="phere">🔥 Phere</button>
+    <button data-tab="rishta">💘 Rishta</button>
+    <button data-tab="guests">👥 Guests</button>
+  </div>
+
+  <!-- AURA -->
+  <div class="pane" id="pane-aura">
+    <div class="card">
+      <div class="chips" id="teamPick">
+        <button class="chip" data-team="ladkiwale">Team Ladkiwale 💃</button>
+        <button class="chip" data-team="ladkewale">Team Ladkewale 🕺</button>
+      </div>
+      <input class="input" id="aSearch" placeholder="...ya guest search karo (naam / handle)" style="margin-top:10px;" autocomplete="off">
+      <div class="target" id="aTargets"></div>
+      <label class="lbl">Reason</label>
+      <input class="input" id="aReason" maxlength="80" placeholder="naagin dance">
+      <div class="chips" id="reasons"></div>
+      <div class="pts">
+        <button class="btn" data-p="50">+50</button>
+        <button class="btn" data-p="100">+100</button>
+        <button class="btn lime" data-p="500">+500</button>
+        <button class="btn neg" data-p="-100">−100</button>
+      </div>
+      <div class="muted" style="margin-top:10px;font-size:14px;">Selected: <b id="aSel">kuch nahi</b></div>
+    </div>
+    <h3>Recent aura (galti hui? ↩️ undo)</h3>
+    <div class="card" id="aLog"><span class="muted">Abhi tak kuch nahi.</span></div>
+  </div>
+
+  <!-- POLLS -->
+  <div class="pane hidden" id="pane-polls">
+    <form class="card" id="pForm">
+      <label class="lbl" for="pQ">Sawaal</label>
+      <input class="input" id="pQ" maxlength="160" required placeholder="Sabse best dressed kaun?">
+      <label class="lbl" for="pO">Options (har line pe ek, 2–6)</label>
+      <textarea class="input" id="pO" required placeholder="Dulha&#10;Dulhan&#10;Phoopha ji&#10;Caterer bhaiya"></textarea>
+      <button class="btn block" style="margin-top:12px;">Poll live karo 🚀</button>
+    </form>
+    <div class="chips" style="margin-top:10px;" id="pIdeas"></div>
+    <h3>Saare polls</h3>
+    <div id="pList"><span class="muted">Koi poll nahi.</span></div>
+  </div>
+
+  <!-- GOSSIP -->
+  <div class="pane hidden" id="pane-gossip">
+    <h3>Pending (approve = stage ticker pe)</h3>
+    <div class="card" id="gPending"><span class="muted">Sab clear ✨</span></div>
+    <h3>On air</h3>
+    <div class="card" id="gLive"><span class="muted">Kuch nahi chal raha.</span></div>
+  </div>
+
+  <!-- PHERE -->
+  <div class="pane hidden" id="pane-phere">
+    <p class="muted">7 challenges. Jo team jeete, uska button dabao. Title edit karke ✏️ save bhi kar sakte ho.</p>
+    <div class="card" id="phList"></div>
+  </div>
+
+  <!-- RISHTA -->
+  <div class="pane hidden" id="pane-rishta">
+    <div class="card">
+      <div class="mono muted">Current phase</div>
+      <div style="font-size:28px;font-weight:800;" id="rPhase">—</div>
+      <div class="stat" style="margin-top:12px;">
+        <div class="card"><b id="rPickers">0</b><span class="mono muted">picks daale</span></div>
+        <div class="card"><b id="rPakke">—</b><span class="mono muted">rishte pakke</span></div>
+        <div class="card"><b id="rGuests">0</b><span class="mono muted">guests</span></div>
+      </div>
+      <p class="muted" style="font-size:13px;">🔒 Kisne kisko chuna — ye yahan kabhi nahi dikhega. Sirf mutual matches ko, sirf reveal ke baad, sirf unke phone pe.</p>
+      <div style="display:grid;gap:8px;margin-top:10px;">
+        <button class="btn lime block" id="rOpen">1. Picks abhi kholo 💘</button>
+        <div style="display:flex;gap:8px;"><input class="input" type="datetime-local" id="rAt"><button class="btn ghost" id="rSched">Schedule</button></div>
+        <button class="btn pink block" id="rReveal">2. Band karo + Reveal 🔥</button>
+        <button class="btn ghost block" id="rLock">Lock (wapas band, no reveal)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GUESTS -->
+  <div class="pane hidden" id="pane-guests">
+    <div class="stat">
+      <div class="card"><b id="gTotal">0</b><span class="mono muted">guests</span></div>
+      <div class="card"><b class="t-ladkiwale" id="gGirls">0</b><span class="mono muted">ladkiwale</span></div>
+      <div class="card"><b class="t-ladkewale" id="gBoys">0</b><span class="mono muted">ladkewale</span></div>
+    </div>
+    <input class="input" id="guSearch" placeholder="Search..." style="margin-top:12px;">
+    <div class="card" id="guList" style="margin-top:8px;"></div>
+    <h3>Danger zone ⚠️</h3>
+    <div class="card">
+      <p class="muted" style="margin:0 0 10px;">Test ke baad, event se pehle: saare guests, polls, gossip, aura, picks delete.</p>
+      <button class="btn ghost" id="reset">Reset party data</button>
+    </div>
+  </div>
+
+  <p class="muted" style="text-align:center;margin-top:24px;"><a href="/party/stage">Stage</a> · <a href="/party/qr">QR poster</a> · <a href="/party/report">Report</a> · <a href="/party">Guest view</a></p>
+</div>
+<footer class="footer">Built by <b>SayIntro</b></footer>
+
+<script src="/config.js"></script>
+<script src="/assets/vendor/supabase-2.117.2.js"></script>
+<script src="/assets/app.js"></script>
+<script>
+(async function () {
+  const { $, $$, esc, toast, rpc, select, live, passwordGate, configured } = App;
+  const TEAM = { ladkiwale: 'Ladkiwale 💃', ladkewale: 'Ladkewale 🕺' };
+  if (!configured) { $('#cfgWarn').innerHTML = '<div class="banner">⚙️ Supabase set nahi hai — config.js check karo.</div>'; return; }
+  const pw = await passwordGate('party_host', 'hostPw');
+
+  let tab = 'aura';
+  let S = { guests: [], polls: [], phere: [], log: [], ev: null, gossip: [] };
+  let target = null;   // {type:'team'|'guest', id, label}
+
+  $$('#tabs button').forEach((b) => b.addEventListener('click', () => {
+    tab = b.dataset.tab;
+    $$('#tabs button').forEach((x) => x.classList.toggle('on', x === b));
+    $$('.pane').forEach((p) => p.classList.toggle('hidden', p.id !== 'pane-' + tab));
+    render();
+  }));
+  const act = (fn) => async (...a) => { try { await fn(...a); } catch (e) { toast(e.message, true); } };
+
+  async function refresh() {
+    const [guests, polls, phere, log, ev, gossip] = await Promise.all([
+      select('guests', (q) => q.order('created_at', { ascending: false }).limit(3000)),
+      select('polls', (q) => q.order('created_at', { ascending: false })),
+      select('phere', (q) => q.order('num')),
+      select('aura_log', (q) => q.order('created_at', { ascending: false }).limit(25)),
+      rpc('rishta_stats'),
+      rpc('host_list_gossip', { pw }),
+    ]);
+    S = { guests, polls, phere, log, ev, gossip };
+    render();
+  }
+  live(['guests', 'polls', 'phere', 'aura_log', 'event_state', 'teams', 'gossip'], refresh, 8000);
+
+  function render() {
+    const pend = S.gossip.filter((g) => g.status === 'pending');
+    $('#gBadge').textContent = pend.length ? `(${pend.length})` : '';
+    ({ aura: renderAura, polls: renderPolls, gossip: renderGossip, phere: renderPhere, rishta: renderRishta, guests: renderGuests })[tab]();
+  }
+
+  // ---- AURA
+  const REASONS = ['naagin dance', 'buffet pe pehle pahuncha', 'best dressed', 'baraat mein sabse zyada naacha', 'phoopha ji ko manaya', 'antakshari legend', 'phone pe busy tha', 'joota chura liya'];
+  $('#reasons').innerHTML = REASONS.map((r) => `<button class="chip">${r}</button>`).join('');
+  $$('#reasons .chip').forEach((c) => c.addEventListener('click', () => ($('#aReason').value = c.textContent)));
+  $$('#teamPick .chip').forEach((c) => c.addEventListener('click', () => { target = { type: 'team', id: c.dataset.team, label: 'Team ' + TEAM[c.dataset.team] }; renderAura(); }));
+  $('#aSearch').addEventListener('input', renderAura);
+  $$('.pts .btn').forEach((b) => b.addEventListener('click', act(async () => {
+    if (!target) { toast('Pehle team ya guest chuno', true); return; }
+    const p = Number(b.dataset.p);
+    await rpc('host_give_aura', { pw, p_guest: target.type === 'guest' ? target.id : null, p_team: target.type === 'team' ? target.id : null, p_points: p, p_reason: $('#aReason').value.trim() });
+    toast(`${p > 0 ? '+' : ''}${p} → ${target.label} ⚡`);
+    $('#aReason').value = '';
+  })));
+  function renderAura() {
+    const q = $('#aSearch').value.trim().toLowerCase().replace(/^@/, '');
+    const list = q ? S.guests.filter((g) => g.name.toLowerCase().includes(q) || g.handle.includes(q)).slice(0, 30) : [];
+    $('#aTargets').innerHTML = list.map((g) => `<div class="row ${target && target.id === g.id ? 'sel' : ''}" data-g="${g.id}">
+      <div class="grow"><b>${esc(g.name)}</b> <small class="t-${g.team}" style="display:inline">@${esc(g.handle)}</small></div><span class="gold">${g.aura}</span></div>`).join('');
+    $$('#aTargets .row').forEach((r) => r.addEventListener('click', () => {
+      const g = S.guests.find((x) => x.id === r.dataset.g);
+      target = { type: 'guest', id: g.id, label: `${g.name} (@${g.handle})` };
+      renderAura();
+    }));
+    $$('#teamPick .chip').forEach((c) => c.classList.toggle('on', !!target && target.type === 'team' && target.id === c.dataset.team));
+    $('#aSel').textContent = target ? target.label : 'kuch nahi';
+    const name = (id) => { const g = S.guests.find((x) => x.id === id); return g ? g.name : '?'; };
+    $('#aLog').innerHTML = S.log.length ? S.log.map((l) => `<div class="row"><div class="grow">
+      <b class="${l.points < 0 ? 'pink' : 'lime'}">${l.points > 0 ? '+' : ''}${l.points}</b> ${esc(l.guest_id ? name(l.guest_id) : 'Team ' + TEAM[l.team])}
+      <small>${esc(l.reason || '')}</small></div><button class="x" data-undo="${l.id}">↩️</button></div>`).join('') : '<span class="muted">Abhi tak kuch nahi.</span>';
+    $$('[data-undo]').forEach((b) => b.addEventListener('click', act(async () => { await rpc('host_undo_aura', { pw, p_log: Number(b.dataset.undo) }); toast('Undo ho gaya'); })));
+  }
+
+  // ---- POLLS
+  const IDEAS = [['Sabse best dressed kaun?', 'Dulha', 'Dulhan', 'Phoopha ji', 'Main 💅'], ['Shaadi ka asli hero?', 'Biryani', 'DJ', 'Rishta Aunty', 'Free WiFi'], ['Baraat late kyun hai?', 'Dulha ready ho raha', 'Ghodi ne mana kar diya', 'Traffic', 'Indian Standard Time'], ['Dulhe ki red flag?', '3am reels', 'Ex ki story dekhta hai', 'Reply 3 din baad', 'Mamma ka beta']];
+  $('#pIdeas').innerHTML = IDEAS.map((x, i) => `<button class="chip" data-i="${i}">💡 ${esc(x[0])}</button>`).join('');
+  $$('#pIdeas .chip').forEach((c) => c.addEventListener('click', () => { const x = IDEAS[c.dataset.i]; $('#pQ').value = x[0]; $('#pO').value = x.slice(1).join('\n'); }));
+  $('#pForm').addEventListener('submit', act(async (e) => {
+    e.preventDefault();
+    await rpc('host_create_poll', { pw, p_question: $('#pQ').value.trim(), p_options: $('#pO').value.split('\n').map((s) => s.trim()).filter(Boolean) });
+    $('#pForm').reset(); toast('Poll live hai 🚀');
+  }));
+  function renderPolls() {
+    $('#pList').innerHTML = S.polls.length ? S.polls.map((p) => {
+      const total = p.counts.reduce((a, b) => a + b, 0);
+      return `<div class="card" style="margin-top:10px;"><div style="display:flex;justify-content:space-between;gap:8px;">
+        <b>${esc(p.question)}</b><span class="mono ${p.status === 'open' ? 'lime' : 'muted'}">${p.status === 'open' ? '● LIVE' : 'CLOSED'}</span></div>
+        ${p.options.map((o, i) => `<div class="res"><div class="lab"><span>${esc(o)}</span><span>${p.counts[i]}</span></div><div class="bar"><i style="width:${total ? (p.counts[i] / total) * 100 : 0}%"></i></div></div>`).join('')}
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button class="x" data-ps="${p.id}" data-s="${p.status === 'open' ? 'closed' : 'open'}">${p.status === 'open' ? '⏹ Close' : '▶️ Reopen'}</button>
+          <button class="x" data-ps="${p.id}" data-s="delete">🗑️ Delete</button><span class="muted" style="margin-left:auto;">${total} votes</span></div></div>`;
+    }).join('') : '<span class="muted">Koi poll nahi.</span>';
+    $$('[data-ps]').forEach((b) => b.addEventListener('click', act(async () => {
+      if (b.dataset.s === 'delete' && !confirm('Poll delete karna hai?')) return;
+      await rpc('host_set_poll', { pw, p_id: Number(b.dataset.ps), p_status: b.dataset.s });
+    })));
+  }
+
+  // ---- GOSSIP (polled: pending gossip is private, so realtime can't deliver it)
+  setInterval(async () => { try { S.gossip = await rpc('host_list_gossip', { pw }); render(); } catch (e) {} }, 6000);
+  function renderGossip() {
+    const pend = S.gossip.filter((g) => g.status === 'pending');
+    const on = S.gossip.filter((g) => g.status === 'approved');
+    $('#gPending').innerHTML = pend.length ? pend.map((g) => `<div class="row"><div class="grow">${esc(g.text)}</div>
+      <button class="x ok" data-gm="${g.id}" data-s="approved">✅</button><button class="x" data-gm="${g.id}" data-s="rejected">❌</button></div>`).join('') : '<span class="muted">Sab clear ✨</span>';
+    $('#gLive').innerHTML = on.length ? on.map((g) => `<div class="row"><div class="grow">${esc(g.text)}</div><button class="x" data-gm="${g.id}" data-s="rejected">Hatao</button></div>`).join('') : '<span class="muted">Kuch nahi chal raha.</span>';
+    $$('[data-gm]').forEach((b) => b.addEventListener('click', act(async () => {
+      await rpc('host_moderate_gossip', { pw, p_id: Number(b.dataset.gm), p_status: b.dataset.s });
+      S.gossip = await rpc('host_list_gossip', { pw }); render();
+    })));
+  }
+
+  // ---- PHERE
+  function renderPhere() {
+    if ($('#phList').contains(document.activeElement)) return;   // don't clobber while typing
+    $('#phList').innerHTML = S.phere.map((p) => `<div class="row" style="flex-wrap:wrap;">
+      <div class="grow" style="display:flex;gap:6px;align-items:center;min-width:200px;"><b>${p.num}.</b>
+        <input class="input" style="padding:8px 10px;" value="${esc(p.title)}" data-title="${p.num}"><button class="x" data-save="${p.num}">✏️</button></div>
+      <button class="x ${p.winner === 'ladkiwale' ? 'on' : ''}" data-ph="${p.num}" data-w="ladkiwale">💃 Ladkiwale</button>
+      <button class="x ${p.winner === 'ladkewale' ? 'on' : ''}" data-ph="${p.num}" data-w="ladkewale">🕺 Ladkewale</button>
+      <button class="x" data-ph="${p.num}" data-w="">—</button></div>`).join('');
+    $$('[data-ph]').forEach((b) => b.addEventListener('click', act(async () => {
+      await rpc('host_set_phera', { pw, p_num: Number(b.dataset.ph), p_winner: b.dataset.w, p_title: '' });
+      toast(b.dataset.w ? `Phera ${b.dataset.ph} → ${TEAM[b.dataset.w]} 🔥` : 'Cleared');
+    })));
+    $$('[data-save]').forEach((b) => b.addEventListener('click', act(async () => {
+      const num = Number(b.dataset.save), p = S.phere.find((x) => x.num === num);
+      await rpc('host_set_phera', { pw, p_num: num, p_winner: p.winner || '', p_title: $(`[data-title="${num}"]`).value });
+      b.blur(); toast('Title saved');
+    })));
+  }
+
+  // ---- RISHTA
+  const PH = { locked: '🔒 Locked', open: '💘 OPEN — guests pick kar rahe hain', revealed: '🔥 Revealed' };
+  function renderRishta() {
+    const ev = S.ev || {};
+    $('#rPhase').textContent = (PH[ev.phase] || '—') + (ev.phase === 'locked' && ev.open_at ? ` (khulega ${new Date(ev.open_at).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' })})` : '');
+    $('#rPickers').textContent = ev.pickers || 0;
+    $('#rPakke').textContent = ev.pakke == null ? '—' : ev.pakke;
+    $('#rGuests').textContent = S.guests.length;
+  }
+  const setPicks = (state, at) => act(async () => { await rpc('host_set_picks', { pw, p_state: state, p_open_at: at || null }); S.ev = await rpc('rishta_stats'); renderRishta(); toast('Done ✅'); })();
+  $('#rOpen').addEventListener('click', () => setPicks('open'));
+  $('#rSched').addEventListener('click', () => { const v = $('#rAt').value; if (!v) return toast('Time chuno', true); setPicks('locked', new Date(v).toISOString()); });
+  $('#rReveal').addEventListener('click', () => { if (confirm('Picks band + sabko result dikhana hai? (Reveal ke baad koi naya pick nahi)')) setPicks('revealed'); });
+  $('#rLock').addEventListener('click', () => setPicks('locked'));
+  setInterval(async () => { if (tab === 'rishta') { try { S.ev = await rpc('rishta_stats'); renderRishta(); } catch (e) {} } }, 10000);
+
+  // ---- GUESTS
+  $('#guSearch').addEventListener('input', renderGuests);
+  function renderGuests() {
+    $('#gTotal').textContent = S.guests.length;
+    $('#gGirls').textContent = S.guests.filter((g) => g.team === 'ladkiwale').length;
+    $('#gBoys').textContent = S.guests.filter((g) => g.team === 'ladkewale').length;
+    const q = $('#guSearch').value.trim().toLowerCase().replace(/^@/, '');
+    const list = S.guests.filter((g) => !q || g.name.toLowerCase().includes(q) || g.handle.includes(q)).slice(0, 200);
+    $('#guList').innerHTML = list.length ? list.map((g) => `<div class="row"><div class="grow"><b>${esc(g.name)}</b> <small style="display:inline" class="t-${g.team}">@${esc(g.handle)}</small></div>
+      <span class="gold">${g.aura}</span><button class="x" data-rm="${g.id}" title="Remove">🗑️</button></div>`).join('') : '<span class="muted">Koi guest nahi.</span>';
+    $$('[data-rm]').forEach((b) => b.addEventListener('click', act(async () => {
+      if (!confirm('Is guest ko hatana hai? (Unka phone dobara join kar sakega)')) return;
+      await rpc('host_remove_guest', { pw, p_guest: b.dataset.rm }); toast('Removed');
+    })));
+  }
+  $('#reset').addEventListener('click', act(async () => {
+    if (prompt('Saara party data delete ho jayega. Type karo: RESET') !== 'RESET') return;
+    await rpc('host_reset_party', { pw }); toast('Fresh start ✨');
+  }));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+/* Party app: dark red / gold */
+:root {
+  --bg: #0d0405;
+  --red: #c8102e;
+  --red-2: #ff3b4e;
+  --gold: #f5c45e;
+}
+body {
+  background:
+    radial-gradient(800px 500px at 100% -10%, rgba(200, 16, 46, 0.45), transparent 60%),
+    radial-gradient(600px 500px at -20% 40%, rgba(245, 196, 94, 0.12), transparent 60%),
+    radial-gradient(700px 500px at 50% 120%, rgba(200, 16, 46, 0.3), transparent 60%),
+    var(--bg);
+  background-attachment: fixed;
+}
+.team-pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px; font-weight: 800; font-size: 13px; }
+.team-ladkiwale { background: var(--girls); color: #fff; }
+.team-ladkewale { background: var(--boys); color: #1b0f05; }
+.t-ladkiwale { color: var(--girls); }
+.t-ladkewale { color: var(--boys); }
+.tabs { display: flex; gap: 6px; overflow-x: auto; padding: 10px 0; position: sticky; top: 0; z-index: 10; background: linear-gradient(var(--bg) 70%, transparent); scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tabs button { flex: none; border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 10px 16px; font-weight: 700; cursor: pointer; position: relative; }
+.tabs button.on { background: var(--gold); color: #1b0f05; border-color: var(--gold); }
+.tabs button .dot { position: absolute; top: -3px; right: -3px; width: 10px; height: 10px; border-radius: 50%; background: var(--lime); }
+.opt { width: 100%; text-align: left; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--line); background: rgba(0, 0, 0, 0.3); font-weight: 700; cursor: pointer; margin-top: 8px; font-size: 16px; }
+.opt:active { transform: scale(0.98); }
+.res { margin-top: 10px; }
+.res .lab { display: flex; justify-content: space-between; font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+.res .lab .mine { color: var(--lime); }
+.res .bar { height: 10px; }
+.ticker-item { padding: 12px 0; border-bottom: 1px solid var(--line); }
+.ticker-item::before { content: '📰 '; }

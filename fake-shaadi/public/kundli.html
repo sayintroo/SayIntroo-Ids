@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Red Flag Kundli Milan · #AanshKiShaadi</title>
+<meta name="theme-color" content="#120304">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚩</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #120304; --red: #c8102e; --red-2: #ff3b4e; --gold: #f5c45e; --gold-2: #ffe3a3;
+    --text: #fff4e2; --muted: rgba(255, 244, 226, 0.6); --line: rgba(255, 244, 226, 0.14); --card: rgba(255, 255, 255, 0.05);
+    --display: 'Bricolage Grotesque', system-ui, sans-serif; --serif: 'Instrument Serif', Georgia, serif; --mono: 'Space Mono', ui-monospace, monospace;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    font-family: var(--display); color: var(--text); min-height: 100dvh; overflow-x: hidden;
+    background:
+      radial-gradient(70vmax 50vmax at 100% 0%, rgba(200, 16, 46, 0.55), transparent 60%),
+      radial-gradient(60vmax 50vmax at 0% 100%, rgba(245, 196, 94, 0.18), transparent 60%),
+      var(--bg);
+  }
+  button, input { font: inherit; color: inherit; }
+  .screen { display: none; min-height: 100dvh; padding: max(20px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom)); max-width: 760px; margin: 0 auto; flex-direction: column; justify-content: center; }
+  .screen.on { display: flex; animation: in 0.35s ease both; }
+  @keyframes in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .mono { font-family: var(--mono); letter-spacing: 0.12em; text-transform: uppercase; font-size: clamp(12px, 1.8vh, 16px); }
+  .serif { font-family: var(--serif); font-style: italic; font-weight: 400; }
+  .gold { color: var(--gold); } .muted { color: var(--muted); } .red { color: var(--red-2); }
+  h1 { font-size: clamp(56px, 16vw, 128px); line-height: 0.86; letter-spacing: -0.05em; margin: 10px 0 14px; font-weight: 800; }
+  h1 .serif { display: block; color: var(--gold); letter-spacing: -0.02em; }
+  h2 { font-size: clamp(34px, 9vw, 64px); line-height: 1; letter-spacing: -0.03em; margin: 8px 0 16px; }
+  .btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; border: 0; border-radius: 999px; padding: clamp(18px, 2.6vh, 26px); font-size: clamp(20px, 3vh, 28px); font-weight: 800; cursor: pointer; background: var(--gold); color: #1b0805; -webkit-tap-highlight-color: transparent; transition: transform 0.1s; }
+  .btn:active { transform: scale(0.97); }
+  .btn.red { background: var(--red); color: #fff; }
+  .btn.ghost { background: transparent; border: 1px solid var(--line); color: var(--text); font-size: 17px; padding: 14px; }
+  .input { width: 100%; padding: 18px 20px; border-radius: 18px; background: rgba(0, 0, 0, 0.4); border: 2px solid var(--line); outline: none; font-size: clamp(20px, 3vh, 28px); font-weight: 700; }
+  .input:focus { border-color: var(--gold); }
+  .count { margin-top: 26px; text-align: center; }
+  .count b { font-size: clamp(40px, 8vh, 72px); display: block; line-height: 1; color: var(--gold); letter-spacing: -0.03em; }
+  .flags { font-size: clamp(30px, 6vh, 54px); letter-spacing: 6px; }
+
+  .progress { display: flex; gap: 6px; margin-bottom: 18px; }
+  .progress i { flex: 1; height: 6px; border-radius: 9px; background: var(--line); }
+  .progress i.done { background: var(--gold); }
+  .who { display: inline-block; padding: 6px 14px; border-radius: 999px; background: var(--red); font-weight: 800; font-size: clamp(14px, 2vh, 20px); }
+  .q { font-size: clamp(34px, 8.5vw, 64px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 800; margin: 18px 0 22px; }
+  .opts { display: grid; gap: 12px; }
+  .opt { text-align: left; padding: clamp(16px, 2.4vh, 24px) 20px; border-radius: 20px; border: 2px solid var(--line); background: var(--card); font-size: clamp(19px, 2.8vh, 28px); font-weight: 700; cursor: pointer; display: flex; gap: 14px; align-items: center; }
+  .opt kbd { font-family: var(--mono); font-size: 14px; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 2px 7px; }
+  .opt:active, .opt.pick { border-color: var(--gold); background: rgba(245, 196, 94, 0.18); }
+  .back { background: none; border: 0; color: var(--muted); margin-top: 18px; cursor: pointer; font-size: 15px; }
+
+  .pass { text-align: center; }
+  .pass .em { font-size: clamp(80px, 18vh, 160px); }
+
+  .chakra { width: min(60vw, 40vh); aspect-ratio: 1; margin: 0 auto; border-radius: 50%; border: 3px solid var(--gold); position: relative; animation: spin 1s linear infinite; box-shadow: 0 0 60px rgba(245, 196, 94, 0.4), inset 0 0 40px rgba(200, 16, 46, 0.6); }
+  .chakra span { position: absolute; left: 50%; top: 50%; font-size: clamp(22px, 4vh, 36px); }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-txt { text-align: center; margin-top: 26px; font-size: clamp(20px, 3vh, 30px); font-weight: 700; }
+
+  .result { text-align: center; }
+  .names { font-size: clamp(26px, 6vw, 44px); font-weight: 800; letter-spacing: -0.02em; }
+  .names .serif { color: var(--red-2); }
+  .score { font-size: clamp(110px, 30vw, 230px); line-height: 0.9; font-weight: 800; letter-spacing: -0.06em; color: var(--gold); text-shadow: 0 0 50px rgba(245, 196, 94, 0.45); }
+  .score small { font-size: 0.32em; color: var(--muted); letter-spacing: -0.02em; }
+  .verdict { font-size: clamp(26px, 6.6vw, 46px); font-weight: 800; line-height: 1.08; letter-spacing: -0.02em; margin: 10px 0; opacity: 0; transform: scale(0.7); transition: all 0.5s cubic-bezier(.2,1.6,.4,1); }
+  .verdict.show { opacity: 1; transform: none; }
+  .yog { font-family: var(--serif); font-style: italic; font-size: clamp(20px, 4.4vw, 30px); color: var(--gold-2); margin: 4px 0; }
+  .meter { margin: 18px auto 6px; max-width: 520px; text-align: left; }
+  .meter .bar { height: 14px; border-radius: 99px; background: var(--line); overflow: hidden; }
+  .meter .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--gold), var(--red-2)); transition: width 1.2s ease 0.3s; }
+  .breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0; text-align: left; }
+  .breakdown div { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; font-size: 14px; }
+  .breakdown b { display: block; font-size: 13px; color: var(--muted); font-family: var(--mono); font-weight: 400; letter-spacing: 0.05em; }
+  .story { width: min(260px, 64vw); aspect-ratio: 9/16; border-radius: 16px; border: 1px solid var(--line); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); margin: 8px auto 14px; display: block; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .next { margin-top: 12px; background: var(--red); color: #fff; font-size: clamp(24px, 3.6vh, 34px); }
+  .foot { text-align: center; font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: 0.12em; margin-top: 22px; }
+  .foot b { color: var(--gold); }
+  .stats { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 16px; margin-top: 14px; display: none; font-family: var(--mono); font-size: 14px; white-space: pre-wrap; }
+  .stats.on { display: block; }
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: #2a0a0d; border: 1px solid var(--gold); padding: 12px 18px; border-radius: 14px; font-weight: 700; z-index: 9; opacity: 0; transition: opacity 0.25s; pointer-events: none; }
+  .toast.on { opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<section class="screen on" id="s-home">
+  <div class="mono gold">#AanshKiShaadi · Booth</div>
+  <div class="flags">🚩🔮🚩</div>
+  <h1>Red Flag <span class="serif">Kundli Milan</span></h1>
+  <p class="muted" style="font-size:clamp(17px,2.4vh,22px);margin:0 0 22px;">6 sawaal. 2 log. 36 gun. Pandit ji batayenge ki tumhare red flags match karte hain ya nahi. 💀</p>
+  <button class="btn" id="go">Kundli milao 🔮</button>
+  <div class="count"><b id="pairCount">0</b><span class="mono muted">couples tested tonight</span></div>
+  <button class="btn ghost" id="statsBtn" style="margin-top:16px;">📊 Club report stats</button>
+  <div class="stats" id="stats"></div>
+  <div class="foot">made with <b>SayIntro</b></div>
+</section>
+
+<!-- NAMES -->
+<section class="screen" id="s-names">
+  <div class="mono gold">Step 1</div>
+  <h2>Kaun kaun hai <span class="serif gold">rishte mein?</span></h2>
+  <form id="namesForm" style="display:grid;gap:12px;">
+    <input class="input" id="n1" maxlength="20" placeholder="Pehla naam" required autocomplete="off">
+    <div class="serif gold" style="text-align:center;font-size:30px;">weds</div>
+    <input class="input" id="n2" maxlength="20" placeholder="Doosra naam" required autocomplete="off">
+    <button class="btn" style="margin-top:8px;">Pandit ji, shuru karo 🪔</button>
+  </form>
+  <button class="back" data-home>← wapas</button>
+</section>
+
+<!-- PASS -->
+<section class="screen pass" id="s-pass">
+  <div class="em" id="passEm">🙈</div>
+  <h2 id="passTitle"></h2>
+  <p class="muted" id="passSub" style="font-size:clamp(17px,2.4vh,22px);"></p>
+  <button class="btn" id="passGo">Main ready hoon 👀</button>
+</section>
+
+<!-- QUESTION -->
+<section class="screen" id="s-q">
+  <div class="progress" id="prog"></div>
+  <div><span class="who" id="qWho"></span> <span class="mono muted" id="qNum"></span></div>
+  <div class="q" id="qText"></div>
+  <div class="opts" id="qOpts"></div>
+  <button class="back" id="qBack">← pichla sawaal</button>
+</section>
+
+<!-- LOADING -->
+<section class="screen" id="s-load">
+  <div class="chakra" id="chakra"></div>
+  <div class="loading-txt" id="loadTxt">Pandit ji kundli mila rahe hain...</div>
+</section>
+
+<!-- RESULT -->
+<section class="screen result" id="s-result">
+  <div class="names" id="rNames"></div>
+  <div class="mono muted" style="margin-top:10px;">Gun mile</div>
+  <div class="score"><span id="rScore">0</span><small>/36</small></div>
+  <div class="verdict" id="rVerdict"></div>
+  <div id="rYog"></div>
+  <div class="meter"><div class="mono muted" style="display:flex;justify-content:space-between;"><span>Red flag meter</span><span id="rFlagPct">0%</span></div><div class="bar"><i id="rFlagBar"></i></div></div>
+  <div class="breakdown" id="rBreak"></div>
+  <canvas class="story" id="cv" width="1080" height="1920"></canvas>
+  <div class="row2">
+    <button class="btn" id="dl">Download ⬇️</button>
+    <button class="btn ghost" id="share" style="font-size:clamp(20px,3vh,28px);font-weight:800;">Share 📤</button>
+  </div>
+  <button class="btn next" id="next">Next couple ➡️</button>
+  <div class="foot">#AanshKiShaadi · made with <b>SayIntro</b></div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  // ---------------- data ----------------
+  // flag = how red-flaggy the answer is (0 green → 2 red)
+  const QS = [
+    { key: 'reply', short: 'Reply time', q: 'Reply kitne time mein karte ho? 📱', opts: [
+      ['2 sec, phone haath mein hi hai ⚡', 0], ['2 ghante, busy hoon 💅', 1], ['3 din baad "sorry dekha nahi" 🫠', 2], ['Seen karke bhool jaata hoon 👻', 2]] },
+    { key: 'ex', short: 'Ex ki story', q: 'Ex ki story dekhte ho? 👀', opts: [
+      ['Kabhi nahi, healed hoon 🧘', 0], ['Kabhi kabhi, galti se 🙊', 1], ['Daily. Fake account se 🕵️', 2]] },
+    { key: 'chai', short: 'Chai/coffee', q: 'Chai ya coffee? ☕', opts: [
+      ['Chai, obviously 🫖', 0], ['Coffee, main character 🧋', 0], ['Jo free mile 🤑', 1], ['3am wala energy drink 🥫', 1]] },
+    { key: 'wrapped', short: 'Spotify Wrapped', q: 'Spotify Wrapped dikhate ho? 🎧', opts: [
+      ['Haan, poori duniya ko 📢', 1], ['Sirf close friends ko 🤫', 0], ['Mera Wrapped embarrassing hai 😭', 0], ['Spotify nahi, YouTube pe gaane 📺', 1]] },
+    { key: 'reels', short: '3am reels', q: '3am reels bhejte ho? 🌚', opts: [
+      ['Haan, 47 reels ek saath 📲', 2], ['Kabhi kabhi, jab relatable ho 😂', 1], ['Main 10 baje so jaata hoon 😴', 0]] },
+    { key: 'cancel', short: 'Plan cancel', q: 'Plans cancel karna love language hai? 🛋️', opts: [
+      ['Haan, ghar pe rehna peace hai 🛋️', 2], ['Last minute pe, guilt ke saath 😬', 1], ['Kabhi nahi, 10 min pehle pahunchta hoon ⏰', 0]] },
+  ];
+  const MAX_FLAGS = QS.reduce((s, q) => s + Math.max(...q.opts.map((o) => o[1])), 0) * 2;
+
+  // bonus combos: test(a, b) gets answer indexes keyed by question
+  const COMBOS = [
+    { pts: 3, text: 'FBI-level stalking duo. Ex ki story pe dono milte ho 🕵️', test: (a, b) => a.ex === 2 && b.ex === 2 },
+    { pts: 2, text: 'Dono ghost karte ho — ladai hogi hi nahi kyunki baat hi nahi hogi 👻', test: (a, b) => a.reply >= 2 && b.reply >= 2 },
+    { pts: 2, text: '3am reel exchange program — certified 📲', test: (a, b) => a.reels === 0 && b.reels === 0 },
+    { pts: 2, text: 'Plans cancel karke ghar pe so jaoge. Soulmates 😴', test: (a, b) => a.cancel === 0 && b.cancel === 0 },
+    { pts: 1, text: 'Chai pe charcha guaranteed. Shaadi ka menu sorted ☕', test: (a, b) => a.chai === 0 && b.chai === 0 },
+    { pts: 1, text: 'Wrapped wars confirmed. Story pe dono lad loge 📢', test: (a, b) => a.wrapped === 0 && b.wrapped === 0 },
+    { pts: -2, text: 'Ek blue tick ka intezaar karega, doosra ghost. Classic Bollywood plot 🎬', test: (a, b) => (a.reply === 0 && b.reply >= 2) || (b.reply === 0 && a.reply >= 2) },
+    { pts: -2, text: 'Ek 10 min pehle ready, doosra ghar pe so raha. Lawyer ready rakho ⚖️', test: (a, b) => (a.cancel === 2 && b.cancel === 0) || (b.cancel === 2 && a.cancel === 0) },
+    { pts: -1, text: 'Ek 3am reels bhejega, doosra 10 baje so chuka. Seen zone forever 🌚', test: (a, b) => (a.reels === 0 && b.reels === 2) || (b.reels === 0 && a.reels === 2) },
+  ];
+
+  function verdictFor(score, toxic) {
+    if (score >= 36) return 'Janam janam ka combo. Pandit ji ne khud shagun de diya 🙏';
+    if (score >= 32) return toxic >= 50 ? `Toxic compatibility ${toxic}%, shaadi pakki 💀` : 'Made for each other. Rishta Aunty ro rahi hai 😭💍';
+    if (score >= 28) return toxic >= 50 ? 'Red flags match ho gaye, perfect couple 🚩🚩' : 'Green flags hi green flags. Suspicious, par shaadi pakki 💚';
+    if (score >= 24) return 'Rishta Aunty approved ✅ Sangeet ki planning shuru';
+    if (score >= 20) return 'Situationship energy. Label lagao ya chhod do 🫠';
+    if (score >= 16) return 'Bas dost raho, group trip pe dekhte hain 🧳';
+    if (score >= 12) return 'Phoopha ji naraaz ho gaye. Shaadi postponed 😤';
+    if (score >= 8) return 'Ek chai bolega, ek coffee. Menu pe hi breakup ☕💔';
+    if (score >= 4) return 'Kundli nahi mili, par WiFi password share kar sakte ho 📶';
+    return 'Pandit ji ne resign kar diya. Bhaago 🏃💨';
+  }
+
+  function compute(A, B) {
+    let score = 0;
+    const rows = QS.map((q) => {
+      const a = A[q.key], b = B[q.key];
+      const fa = q.opts[a][1], fb = q.opts[b][1];
+      let pts, tag;
+      if (a === b) { pts = 5; tag = '✅ Same'; }
+      else if (fa === fb) { pts = 3; tag = '🟡 Same vibe'; }
+      else if (Math.abs(fa - fb) === 1) { pts = 1; tag = '🟠 Thoda adjust'; }
+      else { pts = 0; tag = '❌ Clash'; }
+      score += pts;
+      return { label: q.short, pts, tag };
+    });
+    const yogs = COMBOS.filter((c) => c.test(A, B));
+    yogs.forEach((c) => (score += c.pts));
+    score = Math.max(0, Math.min(36, score));
+    const flags = QS.reduce((s, q) => s + q.opts[A[q.key]][1] + q.opts[B[q.key]][1], 0);
+    const toxic = Math.round((flags / MAX_FLAGS) * 100);
+    return { score, rows, yogs, toxic, verdict: verdictFor(score, toxic) };
+  }
+
+  // ---------------- state & storage ----------------
+  const $ = (s) => document.querySelector(s);
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
+  };
+  let names = ['', ''], answers = [{}, {}], person = 0, qi = 0, result = null;
+
+  function show(id) {
+    document.querySelectorAll('.screen').forEach((s) => s.classList.toggle('on', s.id === 's-' + id));
+    window.scrollTo(0, 0);
+  }
+  function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), 2200); }
+  function home() {
+    $('#pairCount').textContent = store.get('rfk_pairs', 0);
+    $('#stats').classList.remove('on');
+    show('home');
+  }
+
+  // ---------------- flow ----------------
+  $('#go').addEventListener('click', () => { $('#n1').value = ''; $('#n2').value = ''; show('names'); setTimeout(() => $('#n1').focus(), 50); });
+  document.querySelectorAll('[data-home]').forEach((b) => b.addEventListener('click', home));
+  $('#namesForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    names = [$('#n1').value.trim(), $('#n2').value.trim()];
+    answers = [{}, {}]; person = 0; qi = 0;
+    pass();
+  });
+
+  function pass() {
+    const me = names[person], other = names[1 - person];
+    $('#passEm').textContent = person === 0 ? '👀' : '🙈';
+    $('#passTitle').innerHTML = person === 0 ? `Pehle <span class="serif gold">${esc(me)}</span> ki baari` : `Phone <span class="serif gold">${esc(me)}</span> ko pass karo`;
+    $('#passSub').textContent = `${other}, nazar hatao. No peeking, no cheating, no copying answers 🙅`;
+    show('pass');
+  }
+  $('#passGo').addEventListener('click', () => { qi = 0; ask(); });
+
+  function ask() {
+    const q = QS[qi];
+    $('#prog').innerHTML = QS.map((_, i) => `<i class="${i < qi ? 'done' : ''}"></i>`).join('');
+    $('#qWho').textContent = names[person];
+    $('#qNum').textContent = `Sawaal ${qi + 1}/${QS.length}`;
+    $('#qText').textContent = q.q;
+    $('#qOpts').innerHTML = q.opts.map((o, i) => `<button class="opt" data-i="${i}"><kbd>${i + 1}</kbd><span>${esc(o[0])}</span></button>`).join('');
+    document.querySelectorAll('#qOpts .opt').forEach((b) => b.addEventListener('click', () => pick(Number(b.dataset.i), b)));
+    $('#qBack').style.visibility = qi > 0 ? 'visible' : 'hidden';
+    show('q');
+  }
+  let picking = false;
+  function pick(i, el) {
+    if (picking) return;
+    picking = true;
+    el && el.classList.add('pick');
+    answers[person][QS[qi].key] = i;
+    setTimeout(() => {
+      picking = false;
+      if (qi < QS.length - 1) { qi++; ask(); }
+      else if (person === 0) { person = 1; pass(); }
+      else reveal();
+    }, 220);
+  }
+  $('#qBack').addEventListener('click', () => { if (qi > 0) { qi--; ask(); } });
+  document.addEventListener('keydown', (e) => {
+    if (!$('#s-q').classList.contains('on')) return;
+    const n = Number(e.key);
+    if (n >= 1 && n <= QS[qi].opts.length) pick(n - 1, document.querySelectorAll('#qOpts .opt')[n - 1]);
+  });
+
+  // ---------------- reveal ----------------
+  const ZODIAC = ['♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓'];
+  $('#chakra').innerHTML = ZODIAC.map((z, i) => `<span style="transform:translate(-50%,-50%) rotate(${i * 30}deg) translateY(-40%) translateY(calc(-1 * min(22vw, 14vh)))">${z}</span>`).join('') + '<span style="transform:translate(-50%,-50%);font-size:min(14vw,9vh)">🪔</span>';
+
+  function reveal() {
+    result = compute(answers[0], answers[1]);
+    const pairs = store.get('rfk_pairs', 0) + 1;
+    store.set('rfk_pairs', pairs);
+    const log = store.get('rfk_log', []);
+    log.push({ a: names[0], b: names[1], s: result.score, t: Date.now() });
+    store.set('rfk_log', log.slice(-1000));
+
+    const lines = ['Pandit ji kundli mila rahe hain...', 'Red flags gin rahe hain... 🚩', 'Shani ki chaal check ho rahi hai... 🪐', 'Phoopha ji se approval le rahe hain... 😤'];
+    let li = 0;
+    $('#loadTxt').textContent = lines[0];
+    show('load');
+    const iv = setInterval(() => { li = (li + 1) % lines.length; $('#loadTxt').textContent = lines[li]; }, 700);
+    setTimeout(() => { clearInterval(iv); showResult(); }, 2800);
+  }
+
+  function showResult() {
+    const r = result;
+    $('#rNames').innerHTML = `${esc(names[0])} <span class="serif">&amp;</span> ${esc(names[1])}`;
+    $('#rVerdict').classList.remove('show');
+    $('#rVerdict').textContent = r.verdict;
+    $('#rYog').innerHTML = r.yogs.map((y) => `<div class="yog">✨ ${esc(y.text)}</div>`).join('');
+    $('#rFlagPct').textContent = r.toxic + '%';
+    $('#rFlagBar').style.width = '0';
+    $('#rBreak').innerHTML = r.rows.map((x) => `<div><b>${esc(x.label)}</b>${x.tag} · +${x.pts}</div>`).join('');
+    show('result');
+    const el = $('#rScore'), start = performance.now();
+    (function step(now) {
+      const p = Math.min(1, (now - start) / 1600);
+      el.textContent = Math.round(r.score * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(step);
+      else { $('#rVerdict').classList.add('show'); $('#rFlagBar').style.width = r.toxic + '%'; burst(); }
+    })(start);
+    drawStory();
+  }
+
+  function burst() {
+    const icons = result.score >= 24 ? ['💍', '✨', '💛', '🎉', '🌸'] : ['🚩', '💀', '🚩', '😭', '🫠'];
+    for (let i = 0; i < 36; i++) {
+      const s = document.createElement('span');
+      s.textContent = icons[i % icons.length];
+      s.style.cssText = `position:fixed;top:-40px;left:${Math.random() * 100}vw;font-size:${20 + Math.random() * 26}px;z-index:8;pointer-events:none;transition:transform ${2 + Math.random() * 2}s linear;`;
+      document.body.appendChild(s);
+      requestAnimationFrame(() => (s.style.transform = `translateY(${innerHeight + 80}px) rotate(${Math.random() * 540}deg)`));
+      setTimeout(() => s.remove(), 4300);
+    }
+  }
+
+  $('#next').addEventListener('click', home);
+
+  // ---------------- story image ----------------
+  const cv = $('#cv'), ctx = cv.getContext('2d'), W = 1080, H = 1920;
+  const F = { d: '"Bricolage Grotesque", system-ui, sans-serif', s: '"Instrument Serif", Georgia, serif', m: '"Space Mono", monospace' };
+  function center(t, y, font, color) { ctx.font = font; ctx.fillStyle = color; ctx.textAlign = 'center'; ctx.fillText(t, W / 2, y); }
+  function fit(t, tpl, max, maxW) { let s = max; do { ctx.font = tpl.replace('{s}', s); s -= 4; } while (ctx.measureText(t).width > maxW && s > 28); return ctx.font; }
+  function wrap(t, maxW) { const w = t.split(' '), L = []; let l = ''; w.forEach((x) => { const tt = l ? l + ' ' + x : x; if (ctx.measureText(tt).width > maxW && l) { L.push(l); l = x; } else l = tt; }); if (l) L.push(l); return L; }
+  function rr(x, y, w, h, r) { ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x, y, w, h, r) : ctx.rect(x, y, w, h); }
+
+  function drawStory() {
+    const r = result;
+    const g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, '#2a0508'); g.addColorStop(0.5, '#160304'); g.addColorStop(1, '#0c0203');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    const glow = (x, y, rad, c) => { const rg = ctx.createRadialGradient(x, y, 0, x, y, rad); rg.addColorStop(0, c); rg.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = rg; ctx.fillRect(0, 0, W, H); };
+    glow(W, 0, 900, 'rgba(200,16,46,0.6)'); glow(0, H, 800, 'rgba(245,196,94,0.22)'); glow(W / 2, 900, 520, 'rgba(245,196,94,0.18)');
+    // mandala rings
+    ctx.strokeStyle = 'rgba(245,196,94,0.14)'; ctx.lineWidth = 2;
+    for (let i = 1; i <= 6; i++) { ctx.beginPath(); ctx.arc(W / 2, 880, 120 + i * 60, 0, Math.PI * 2); ctx.stroke(); }
+    ctx.strokeStyle = 'rgba(245,196,94,0.8)'; ctx.lineWidth = 4; rr(44, 44, W - 88, H - 88, 40); ctx.stroke();
+
+    center('#AanshKiShaadi', 160, `italic 400 60px ${F.s}`, '#ff3b4e');
+    center('🚩 RED FLAG KUNDLI MILAN 🚩', 230, `700 34px ${F.m}`, '#f5c45e');
+
+    const nm = `${names[0]} & ${names[1]}`;
+    center(nm, 400, fit(nm, `800 {s}px ${F.d}`, 110, 900), '#fff4e2');
+
+    center('GUN MILE', 600, `700 40px ${F.m}`, 'rgba(255,244,226,0.7)');
+    ctx.font = `800 380px ${F.d}`;
+    const sw = ctx.measureText(String(r.score)).width;
+    ctx.font = `800 120px ${F.d}`;
+    const dw = ctx.measureText('/36').width;
+    const x0 = W / 2 - (sw + dw) / 2;
+    ctx.textAlign = 'left';
+    ctx.shadowColor = 'rgba(245,196,94,0.6)'; ctx.shadowBlur = 50;
+    ctx.fillStyle = '#f5c45e'; ctx.font = `800 380px ${F.d}`; ctx.fillText(String(r.score), x0, 960);
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = 'rgba(255,244,226,0.55)'; ctx.font = `800 120px ${F.d}`; ctx.fillText('/36', x0 + sw + 10, 960);
+
+    // verdict
+    let size = 76, lines;
+    do { ctx.font = `800 ${size}px ${F.d}`; lines = wrap(r.verdict, 900); size -= 4; } while (lines.length > 3 && size > 44);
+    size += 4;
+    lines.forEach((l, i) => center(l, 1110 + i * size * 1.12, `800 ${size}px ${F.d}`, '#fff4e2'));
+    let y = 1110 + lines.length * size * 1.12 + 30;
+
+    // yog
+    if (r.yogs[0]) {
+      ctx.font = `italic 400 48px ${F.s}`;
+      const yl = wrap('✨ ' + r.yogs[0].text, 880).slice(0, 2);
+      yl.forEach((l, i) => center(l, y + 30 + i * 56, `italic 400 48px ${F.s}`, '#ffe3a3'));
+      y += 30 + yl.length * 56 + 20;
+    }
+
+    // red flag meter
+    const my = Math.max(y + 20, 1560);
+    ctx.textAlign = 'left'; ctx.font = `700 30px ${F.m}`; ctx.fillStyle = 'rgba(255,244,226,0.7)';
+    ctx.fillText('RED FLAG METER', 140, my);
+    ctx.textAlign = 'right'; ctx.fillText(r.toxic + '%', W - 140, my);
+    rr(140, my + 24, W - 280, 30, 15); ctx.fillStyle = 'rgba(255,255,255,0.12)'; ctx.fill();
+    const bg = ctx.createLinearGradient(140, 0, W - 140, 0); bg.addColorStop(0, '#f5c45e'); bg.addColorStop(1, '#ff3b4e');
+    rr(140, my + 24, Math.max(30, (W - 280) * r.toxic / 100), 30, 15); ctx.fillStyle = bg; ctx.fill();
+
+    center('25 OCT · IMPERIAL PALACE · CHANDRAPUR', 1770, `400 26px ${F.m}`, '#f5c45e');
+    center('made with SayIntro', 1830, `400 28px ${F.m}`, 'rgba(255,244,226,0.6)');
+  }
+
+  function blob() { return new Promise((res) => cv.toBlob(res, 'image/png')); }
+  const fname = () => `kundli-${names.join('-').replace(/[^a-z0-9-]+/gi, '').toLowerCase() || 'couple'}.png`;
+  $('#dl').addEventListener('click', async () => {
+    const url = URL.createObjectURL(await blob());
+    const a = Object.assign(document.createElement('a'), { href: url, download: fname() });
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    toast('Story download ho gayi 🔥 Tag #AanshKiShaadi');
+  });
+  $('#share').addEventListener('click', async () => {
+    const file = new File([await blob()], fname(), { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try { await navigator.share({ files: [file], text: `Gun mile: ${result.score}/36 🚩 #AanshKiShaadi` }); } catch (e) {}
+    } else toast('Share yahan nahi chalta — Download karo');
+  });
+
+  // ---------------- club stats ----------------
+  $('#statsBtn').addEventListener('click', () => {
+    const el = $('#stats');
+    if (el.classList.toggle('on')) {
+      const log = store.get('rfk_log', []);
+      const pairs = store.get('rfk_pairs', 0);
+      const avg = log.length ? (log.reduce((s, x) => s + x.s, 0) / log.length).toFixed(1) : '—';
+      const best = log.slice().sort((a, b) => b.s - a.s)[0];
+      const perfect = log.filter((x) => x.s >= 32).length;
+      const text = `🚩 Red Flag Kundli Milan — #AanshKiShaadi\nCouples tested: ${pairs}\nAverage gun: ${avg}/36\n32+ (shaadi pakki): ${perfect}\nTop score: ${best ? best.s + '/36' : '—'}`;
+      el.innerHTML = `${esc(text)}\n\n<button class="btn ghost" id="copyStats" style="margin-top:6px;">Copy for report 📋</button><button class="btn ghost" id="resetStats" style="margin-top:8px;font-size:14px;">Reset counter (naye event ke liye)</button>`;
+      $('#copyStats').addEventListener('click', () => { navigator.clipboard ? navigator.clipboard.writeText(text).then(() => toast('Copied ✅'), () => prompt('Copy:', text)) : prompt('Copy:', text); });
+      $('#resetStats').addEventListener('click', () => { if (prompt('Counter 0 karna hai? Type: RESET') === 'RESET') { store.set('rfk_pairs', 0); store.set('rfk_log', []); home(); } });
+    }
+  });
+
+  function esc(s) { return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+
+  home();
+  if (document.fonts) document.fonts.load(`800 100px ${F.d}`).catch(() => {});
+  // Offline support: cache this page + fonts once loaded (needs https, ignored on file://)
+  if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('/kundli-sw.js').catch(() => {});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Event Report · #AanshKiShaadi</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/base.css">
+<link rel="stylesheet" href="/assets/party.css">
+<style>
+  h1 { font-size: 36px; letter-spacing: -0.02em; margin: 16px 0 4px; }
+  .kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .kpis .card { padding: 14px; }
+  .kpis b { display: block; font-size: 30px; letter-spacing: -0.02em; line-height: 1.1; }
+  pre { white-space: pre-wrap; font-family: var(--mono); font-size: 13px; line-height: 1.55; margin: 0; }
+  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="mono gold" style="margin-top:16px;">Club + sponsor report</div>
+  <h1>Event ka <span class="serif gold">hisaab</span> 📊</h1>
+  <div id="cfgWarn"></div>
+  <div class="kpis" id="kpis"></div>
+  <label class="lbl" for="kundli">Red Flag Kundli pairs (booth device pe dekho)</label>
+  <input class="input" id="kundli" type="number" inputmode="numeric" min="0" placeholder="e.g. 84">
+  <div class="actions">
+    <button class="btn" id="copy">Copy text 📋</button>
+    <a class="btn lime" id="wa" target="_blank" rel="noopener">WhatsApp pe bhejo</a>
+  </div>
+  <div class="card"><pre id="out">Loading...</pre></div>
+</div>
+<footer class="footer">Built by <b>SayIntro</b></footer>
+
+<script src="/config.js"></script>
+<script src="/assets/vendor/supabase-2.117.2.js"></script>
+<script src="/assets/app.js"></script>
+<script>
+(async function () {
+  const { C, $, esc, inr, select, rpc, copy, configured } = App;
+  if (!configured) { $('#cfgWarn').innerHTML = '<div class="banner">⚙️ Supabase set nahi hai — config.js check karo.</div>'; return; }
+  try { $('#kundli').value = localStorage.getItem('rfk_pairs') || ''; } catch (e) {}
+
+  const [guests, teams, polls, phere, gossip, aura, donations, rs] = await Promise.all([
+    select('guests', (q) => q.order('aura', { ascending: false }).limit(5000)),
+    select('teams'),
+    select('polls', (q) => q.order('created_at')),
+    select('phere', (q) => q.order('num')),
+    select('gossip'),
+    select('aura_log', (q) => q.limit(10000)),
+    select('donations', (q) => q.limit(10000)),
+    rpc('rishta_stats').catch(() => ({})),
+  ]);
+
+  const n = { ladkiwale: 0, ladkewale: 0 }, pts = { ladkiwale: 0, ladkewale: 0 };
+  guests.forEach((g) => { n[g.team]++; pts[g.team] += g.aura; });
+  teams.forEach((t) => (pts[t.name] += t.bonus));
+  const votes = polls.reduce((s, p) => s + p.counts.reduce((a, b) => a + b, 0), 0);
+  const shagun = donations.reduce((s, d) => s + d.amount, 0);
+  const donors = new Set(donations.map((d) => d.name.trim().replace(/^@+/, '').toLowerCase())).size;
+  const phereWon = { ladkiwale: phere.filter((p) => p.winner === 'ladkiwale').length, ladkewale: phere.filter((p) => p.winner === 'ladkewale').length };
+  const winner = pts.ladkiwale === pts.ladkewale ? 'Tie 🤝' : pts.ladkiwale > pts.ladkewale ? 'Ladkiwale 💃' : 'Ladkewale 🕺';
+  const voters = Math.min(guests.length, Math.max(0, ...polls.map((p) => p.counts.reduce((a, b) => a + b, 0))));
+
+  $('#kpis').innerHTML = [
+    ['Guests', guests.length], ['Total votes', votes], ['Shagun', inr(shagun)], ['Rishte pakke', rs.pakke == null ? '—' : rs.pakke],
+  ].map(([k, v]) => `<div class="card"><span class="mono muted">${k}</span><b>${esc(v)}</b></div>`).join('');
+
+  function build() {
+    const k = $('#kundli').value.trim();
+    const L = [];
+    L.push(`*${C.event.hashtag} — Event Report* 📊`);
+    L.push(`${C.event.presents} · ${C.event.date} · ${C.event.venue}, ${C.event.city}`);
+    L.push('');
+    L.push(`👥 *Guests checked in:* ${guests.length}`);
+    L.push(`   💃 Ladkiwale: ${n.ladkiwale} · 🕺 Ladkewale: ${n.ladkewale}`);
+    L.push(`🏆 *Winning team:* ${winner} (${pts.ladkiwale} vs ${pts.ladkewale} aura)`);
+    L.push(`🔥 *Phere won:* Ladkiwale ${phereWon.ladkiwale} · Ladkewale ${phereWon.ladkewale}`);
+    L.push('');
+    L.push(`🗳️ *Polls:* ${polls.length} · *Votes:* ${votes}${polls.length ? ` · peak participation ${guests.length ? Math.round((voters / guests.length) * 100) : 0}%` : ''}`);
+    polls.forEach((p) => {
+      const total = p.counts.reduce((a, b) => a + b, 0);
+      const i = p.counts.indexOf(Math.max(...p.counts));
+      L.push(`   • ${p.question} → ${total ? `${p.options[i]} (${Math.round((p.counts[i] / total) * 100)}%)` : 'no votes'} · ${total} votes`);
+    });
+    L.push('');
+    L.push(`⚡ *Top Aura:*`);
+    guests.slice(0, 5).forEach((g, i) => L.push(`   ${i + 1}. ${g.name} (@${g.handle}) — ${g.aura}`));
+    L.push(`   Aura moments given: ${aura.length}`);
+    L.push('');
+    L.push(`📰 *Breaking news on air:* ${gossip.length}`);
+    L.push(`💘 *Rishta Pakka:* ${rs.pickers || 0} guests ne pick kiya${rs.pakke != null ? ` · ${rs.pakke} rishte pakke` : ''}`);
+    if (k) L.push(`🚩 *Red Flag Kundli pairs tested:* ${k}`);
+    L.push('');
+    L.push(`💸 *Real Shagun for ${C.ngo.name}:* ${inr(shagun)} from ${donors} people${C.goal ? ` (${Math.round((shagun / C.goal) * 100)}% of ${inr(C.goal)} goal)` : ''}`);
+    L.push('');
+    L.push('_Built by SayIntro_');
+    return L.join('\n');
+  }
+  function render() {
+    const text = build();
+    $('#out').textContent = text;
+    $('#wa').href = 'https://wa.me/?text=' + encodeURIComponent(text);
+  }
+  $('#kundli').addEventListener('input', render);
+  $('#copy').addEventListener('click', () => copy(build(), 'Report copied 📋'));
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Real Shagun · #AanshKiShaadi</title>
+<meta name="description" content="Fake shaadi. Real shagun. Har rupaya NGO ko jaata hai. #AanshKiShaadi — 25 Oct, Imperial Palace, Chandrapur.">
+<meta name="theme-color" content="#0b0610">
+<meta property="og:title" content="Fake shaadi. Real shagun. 💸">
+<meta property="og:description" content="#AanshKiShaadi — shagun do, NGO ko jaata hai. 25 Oct · Imperial Palace, Chandrapur">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💸</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/base.css">
+<style>
+  section { padding: 34px 0 6px; }
+  h2.sec { font-size: clamp(30px, 8vw, 40px); line-height: 1; margin: 6px 0 14px; letter-spacing: -0.02em; }
+  h2.sec .serif { color: var(--gold); }
+
+  /* top bar */
+  .top { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 14px 0 0; }
+  .tag { font-family: var(--serif); font-style: italic; font-size: 22px; transform: rotate(-4deg); color: var(--text); }
+  .spons-top { text-align: right; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--muted); line-height: 1.3; }
+  .spons-top b { display: block; font-family: var(--serif); font-style: normal; font-weight: 400; font-size: 15px; letter-spacing: 0; color: var(--gold-2); }
+
+  /* hero */
+  .hero { text-align: center; padding: 26px 0 8px; position: relative; }
+  .pillars { position: absolute; inset: -10px -16px auto; height: 300px; pointer-events: none; z-index: -1; opacity: 0.55;
+    background: repeating-linear-gradient(90deg, transparent 0 22px, rgba(226, 40, 59, 0.45) 22px 25px, transparent 25px 54px);
+    -webkit-mask: linear-gradient(#000, transparent); mask: linear-gradient(#000, transparent); filter: blur(1px); }
+  .presents { font-family: var(--serif); font-size: 22px; letter-spacing: 0.04em; }
+  .presents small { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.5em; margin-top: 2px; color: var(--muted); }
+  .date { font-family: var(--mono); font-weight: 700; color: var(--gold); margin-top: 20px; letter-spacing: 0.12em; }
+  h1.title { margin: 4px 0 0; line-height: 0.82; font-size: clamp(76px, 25vw, 128px); letter-spacing: -0.05em; font-weight: 800; }
+  h1.title .serif { display: block; color: var(--gold); letter-spacing: -0.02em; font-size: 1.08em; }
+  .tagline { font-size: clamp(22px, 6.4vw, 30px); font-weight: 700; margin: 16px 0 6px; }
+  .tagline .serif { color: var(--pink); }
+  .hero p.sub { color: var(--muted); max-width: 420px; margin: 0 auto; }
+  .hero .ctas { display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+  .venue { margin-top: 16px; font-family: var(--serif); font-size: 20px; }
+  .venue i { color: var(--gold); }
+
+  /* counter */
+  .counter { margin-top: 26px; text-align: left; }
+  .counter .row { display: flex; justify-content: space-between; align-items: center; }
+  .counter .big { font-size: clamp(46px, 14vw, 64px); font-weight: 800; letter-spacing: -0.03em; line-height: 1; margin: 10px 0 6px; }
+  .counter .meta { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 8px; }
+
+  /* tiers */
+  .tiers { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tier { text-align: left; padding: 14px; border-radius: 18px; border: 1px solid var(--line); background: var(--card); cursor: pointer; position: relative; transition: transform 0.12s, border-color 0.12s, background 0.12s; }
+  .tier:active { transform: scale(0.98); }
+  .tier .em { font-size: 26px; }
+  .tier .amt { font-weight: 800; font-size: 26px; letter-spacing: -0.02em; margin-top: 4px; }
+  .tier .t { font-weight: 700; font-size: 14px; line-height: 1.2; }
+  .tier .s { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .tier.on { border-color: var(--gold); background: linear-gradient(160deg, rgba(245, 196, 94, 0.22), rgba(255, 79, 154, 0.1)); }
+  .tier.on::after { content: '✓'; position: absolute; top: 10px; right: 12px; width: 22px; height: 22px; border-radius: 50%; background: var(--gold); color: #1b0f05; font-weight: 800; font-size: 13px; display: grid; place-items: center; }
+  .custom { display: flex; gap: 10px; margin-top: 10px; align-items: center; }
+  .custom .rs { font-size: 22px; font-weight: 800; color: var(--gold); }
+
+  /* pay */
+  .pay .sel { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .pay .sel .amt { font-size: 40px; font-weight: 800; letter-spacing: -0.03em; }
+  .upi-row { display: flex; align-items: center; gap: 10px; margin-top: 12px; padding: 12px 14px; border-radius: 14px; background: rgba(0, 0, 0, 0.35); border: 1px dashed var(--line); }
+  .upi-row code { font-family: var(--mono); font-size: 15px; flex: 1; overflow-wrap: anywhere; }
+  .qrbox { display: none; text-align: center; margin-top: 14px; }
+  .qrbox canvas { width: 220px; height: 220px; border-radius: 14px; }
+  .qrbox.show { display: block; }
+  .steps { margin: 14px 0 0; padding-left: 20px; color: var(--muted); font-size: 14px; }
+  .steps li { margin: 4px 0; }
+
+  /* leaderboard */
+  .lb { list-style: none; margin: 0; padding: 0; }
+  .lb li { display: flex; align-items: center; gap: 12px; padding: 12px 4px; border-bottom: 1px solid var(--line); }
+  .lb .rk { width: 30px; font-family: var(--mono); color: var(--muted); }
+  .lb li:nth-child(1) .rk { color: var(--gold); }
+  .lb .nm { flex: 1; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .lb .am { font-family: var(--mono); color: var(--lime); }
+
+  /* card generator */
+  .gen-grid { display: grid; gap: 14px; }
+  .preview { display: flex; justify-content: center; }
+  .preview canvas { width: min(270px, 70vw); aspect-ratio: 9/16; height: auto; border-radius: 16px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); border: 1px solid var(--line); }
+  .sugg { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .gen-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .check { display: flex; gap: 10px; align-items: flex-start; margin-top: 12px; font-size: 14px; color: var(--muted); }
+  .check input { width: 20px; height: 20px; accent-color: var(--gold); flex: none; margin-top: 1px; }
+
+  /* sponsors */
+  .sp-title { text-align: center; padding: 20px; }
+  .sp-title .logo img { max-height: 70px; }
+  .sp-title .logo b { font-family: var(--serif); font-weight: 400; font-size: 28px; color: var(--gold-2); }
+  .sp-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); text-align: center; margin: 18px 0 10px; }
+  .sp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+  .sp-grid .logo { display: grid; place-items: center; min-height: 78px; padding: 12px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); text-align: center; }
+  .sp-grid .logo img { max-height: 54px; object-fit: contain; }
+  .sp-grid .logo b { font-size: 16px; letter-spacing: 0.02em; }
+  .co { border: 1px solid rgba(245, 196, 94, 0.45); border-radius: 22px; padding: 4px 14px 16px; box-shadow: 0 0 40px rgba(226, 40, 59, 0.15) inset; }
+
+  /* faq */
+  details { border-bottom: 1px solid var(--line); padding: 14px 2px; }
+  summary { cursor: pointer; font-weight: 700; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; color: var(--gold); font-size: 22px; line-height: 1; transition: transform 0.2s; }
+  details[open] summary::after { transform: rotate(45deg); }
+  details p { color: var(--muted); margin: 10px 0 0; }
+
+  .ngo { background: linear-gradient(150deg, rgba(198, 244, 50, 0.12), rgba(255, 255, 255, 0.03)); border-color: rgba(198, 244, 50, 0.35); }
+
+  .sticky-cta { position: fixed; left: 0; right: 0; bottom: 0; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: linear-gradient(transparent, rgba(11, 6, 16, 0.95) 35%); z-index: 20; transform: translateY(110%); transition: transform 0.25s; }
+  .sticky-cta.show { transform: none; }
+  .sticky-cta .btn { max-width: 528px; margin: 0 auto; display: flex; }
+
+  @media (min-width: 700px) { .qrbox { display: block; } .qr-toggle { display: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="tag" id="hashtag"></div>
+    <div class="spons-top">SPONSORED BY<b id="titleSponsorTop"></b></div>
+  </div>
+
+  <div id="cfgWarn"></div>
+
+  <header class="hero">
+    <div class="pillars"></div>
+    <div class="presents"><span id="presents"></span><small>PRESENTS</small></div>
+    <div class="date" id="date"></div>
+    <h1 class="title">Fake<span class="serif">Shaadi</span></h1>
+    <div class="tagline">Fake shaadi. <span class="serif">Real shagun.</span></div>
+    <p class="sub">Shaadi nakli hai, dulha-dulhan bhi nakli. Par shagun 100% asli — aur saara ka saara jaata hai <b id="ngoName1" class="lime"></b> ko. 💛</p>
+    <div class="ctas">
+      <a class="btn" href="#shagun">Shagun do 💸</a>
+      <a class="btn ghost" href="#card">Shagun card banao</a>
+    </div>
+    <div class="venue">✦ Venue : <i id="venue"></i> ✦</div>
+
+    <div class="card counter" id="counterCard">
+      <div class="row"><span class="mono gold">Total shagun</span><span class="mono"><span class="live-dot"></span> Live</span></div>
+      <div class="big" id="total">₹0</div>
+      <div class="bar"><i id="goalBar"></i></div>
+      <div class="meta"><span id="givers">0 shagun-givers</span><span id="goal"></span></div>
+    </div>
+  </header>
+
+  <section id="shagun">
+    <div class="mono pink">Step 1</div>
+    <h2 class="sec">Apna <span class="serif">shagun</span> chuno</h2>
+    <div class="tiers" id="tiers"></div>
+    <div class="custom">
+      <span class="rs">₹</span>
+      <input class="input" id="customAmt" type="number" inputmode="numeric" min="1" placeholder="Apna amount (koi bhi)">
+    </div>
+  </section>
+
+  <section id="pay">
+    <div class="mono pink">Step 2</div>
+    <h2 class="sec">UPI se <span class="serif">bhejo</span></h2>
+    <div class="card pay">
+      <div class="sel"><span class="muted" id="selTitle">Amount chuno upar se 👆</span><span class="amt" id="selAmt">₹0</span></div>
+      <a class="btn block" id="upiBtn" href="#" style="margin-top:12px;">UPI app kholo 📲</a>
+      <div class="upi-row">
+        <code id="upiId"></code>
+        <button class="btn sm ghost" id="copyUpi" type="button">Copy</button>
+      </div>
+      <div class="muted" style="font-size:13px;margin-top:8px;">Payee: <b id="payee"></b></div>
+      <button class="btn sm ghost qr-toggle" id="qrToggle" type="button" style="margin-top:12px;">Dost ke phone se scan karwana hai? QR dikhao</button>
+      <div class="qrbox" id="qrBox"><div id="qr"></div><div class="mono muted" style="margin-top:6px;">Kisi bhi UPI app se scan karo</div></div>
+      <ol class="steps">
+        <li>Button dabao → GPay / PhonePe / Paytm khulega</li>
+        <li>App na khule? UPI ID copy karke manually pay karo</li>
+        <li>Payment screenshot venue pe kisi volunteer ko dikhao → leaderboard pe naam chadh jayega 🏆</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="leaders">
+    <div class="mono pink"><span class="live-dot"></span>&nbsp; Live leaderboard</div>
+    <h2 class="sec">Shagun ke <span class="serif">sultan</span></h2>
+    <div class="card"><ul class="lb" id="lb"><li class="muted">Pehla shagun tumhara ho sakta hai 👀</li></ul></div>
+  </section>
+
+  <section id="card">
+    <div class="mono pink">Step 3 (the fun one)</div>
+    <h2 class="sec">Shagun <span class="serif">card</span> banao</h2>
+    <p class="muted" style="margin-top:-6px;">Naam + aashirwad daalo → Insta story ready. Tag karo <b class="gold" id="hashtag2"></b>.</p>
+    <div class="gen-grid">
+      <div class="card">
+        <label class="lbl" for="cName">Tumhara naam / @handle</label>
+        <input class="input" id="cName" maxlength="40" placeholder="e.g. Riya or @riya.vibes">
+        <label class="lbl" for="cMsg">Aashirwad (max 140)</label>
+        <textarea class="input" id="cMsg" maxlength="140" placeholder="Dulha-dulhan ko kuch keh do..."></textarea>
+        <div class="sugg" id="sugg"></div>
+        <label class="check"><input type="checkbox" id="cShowAmt" checked> Card pe mera shagun amount dikhao</label>
+        <label class="check"><input type="checkbox" id="cStage"> Mera aashirwad stage screen pe bhi dikhao (volunteer approve karega)</label>
+      </div>
+      <div class="preview"><canvas id="cv" width="1080" height="1920"></canvas></div>
+      <div class="gen-actions">
+        <button class="btn" id="dl" type="button">Download PNG ⬇️</button>
+        <button class="btn pink" id="share" type="button">Share 📤</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="card ngo">
+      <div class="mono lime">Paisa kahan jaata hai?</div>
+      <h2 class="sec" style="margin-top:8px;" id="ngoName2"></h2>
+      <p class="muted" id="ngoAbout" style="margin:0;"></p>
+      <p style="margin:10px 0 0;" id="ngoLink"></p>
+    </div>
+  </section>
+
+  <section id="sponsors">
+    <div class="sp-label">Sponsored by</div>
+    <div class="card sp-title" id="spTitle"></div>
+    <div class="sp-label">Presented by</div>
+    <div class="sp-grid" id="spPresent"></div>
+    <div class="co">
+      <div class="sp-label">Co-sponsored by</div>
+      <div class="sp-grid" id="spCo"></div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="mono pink">FAQ</div>
+    <h2 class="sec">Sawaal <span class="serif">jawaab</span></h2>
+    <div id="faqList">
+      <details><summary>Shaadi sach mein fake hai na? 😅</summary><p>Haan bestie, 100% fake. Koi pheron ka paperwork nahi. Bas vibes, dance, khaana aur ek real cause.</p></details>
+      <details><summary>Mera paisa kahan jaata hai?</summary><p>Seedha NGO ke UPI pe — <b class="ngo-name"></b>. Hum (organisers) beech mein paisa touch bhi nahi karte. Jo UPI ID upar dikh rahi hai, wo NGO ki hai.</p></details>
+      <details><summary>Leaderboard pe naam kaise aayega?</summary><p>Pay karne ke baad venue pe kisi volunteer ko screenshot dikhao. Wo naam ya Insta handle add kar dega aur leaderboard turant update ho jayega — stage screen pe bhi. Naam nahi chahiye? Bol do "Anonymous".</p></details>
+      <details><summary>Minimum kitna dena hai?</summary><p>Koi minimum nahi. ₹51 ki chai bhi chalegi. Dil bada hona chahiye, amount nahi.</p></details>
+      <details><summary>UPI app nahi khul raha?</summary><p>Kuch browsers (jaise Insta ke andar wala) UPI links block karte hain. UPI ID copy karo aur GPay/PhonePe/Paytm mein manually pay karo. Ya page ko Chrome/Safari mein kholo.</p></details>
+      <details><summary>Tax receipt / 80G milega?</summary><p>Ye NGO pe depend karta hai. Venue pe volunteer se poochho — hum NGO se connect karwa denge.</p></details>
+      <details><summary>Shagun card ka kya karun?</summary><p>Download karo, Insta story pe daalo, event ko tag karo. Jitne zyada log dekhenge, utna zyada shagun NGO tak jayega. Main character energy 💅</p></details>
+    </div>
+  </section>
+</div>
+
+<footer class="footer">
+  <div id="footEvent"></div>
+  <div style="margin-top:8px;">Built by <b>SayIntro</b></div>
+</footer>
+
+<div class="sticky-cta" id="stickyCta"><a class="btn block" href="#pay" id="stickyBtn">Shagun do 💸</a></div>
+
+<script src="/config.js"></script>
+<script src="/assets/vendor/supabase-2.117.2.js"></script>
+<script src="/assets/vendor/qrcode-1.4.4.js"></script>
+<script src="/assets/app.js"></script>
+<script>
+(function () {
+  const { C, $, $$, esc, inr, toast, copy, upiLink, qrCanvas, countTo, logoHTML, select, live, rpc, configured } = App;
+  const E = C.event;
+  const cv = $('#cv'), ctx = cv.getContext('2d');
+  const W = 1080, H = 1920;
+
+  // ---- static content from config
+  $('#hashtag').textContent = E.hashtag;
+  $('#hashtag2').textContent = E.hashtag;
+  $('#titleSponsorTop').textContent = C.sponsors.title.name;
+  $('#presents').textContent = E.presents.toUpperCase();
+  $('#date').textContent = E.date.toUpperCase();
+  $('#venue').textContent = E.venue + ', ' + E.city;
+  $('#ngoName1').textContent = C.ngo.name;
+  $('#ngoName2').textContent = C.ngo.name;
+  $('#ngoAbout').textContent = C.ngo.about;
+  if (C.ngo.link) $('#ngoLink').innerHTML = `<a href="${esc(C.ngo.link)}" target="_blank" rel="noopener">NGO ke baare mein aur jaano →</a>`;
+  $$('.ngo-name').forEach((el) => (el.textContent = C.ngo.name));
+  $('#upiId').textContent = C.upi.id;
+  $('#payee').textContent = C.upi.payeeName;
+  $('#goal').textContent = 'Goal ' + inr(C.goal);
+  $('#footEvent').textContent = `${E.hashtag} · ${E.date} · ${E.venue}, ${E.city}`;
+  $('#spTitle').innerHTML = logoHTML(C.sponsors.title);
+  $('#spPresent').innerHTML = C.sponsors.presentedBy.map((s) => logoHTML(s)).join('');
+  $('#spCo').innerHTML = C.sponsors.coSponsors.map((s) => logoHTML(s)).join('');
+
+  const warn = [];
+  if (/yourngo|example/i.test(C.upi.id)) warn.push('UPI ID abhi placeholder hai');
+  if (!configured) warn.push('Supabase set nahi hai (live counter off)');
+  if (warn.length) $('#cfgWarn').innerHTML = `<div class="banner">⚙️ Setup baaki: ${warn.join(' · ')} → <code>config.js</code> edit karo.</div>`;
+
+  // ---- tiers + amount
+  let amount = 0, tierTitle = '';
+  $('#tiers').innerHTML = C.tiers.map((t, i) => `
+    <button class="tier" type="button" data-i="${i}">
+      <div class="em">${t.emoji}</div>
+      <div class="amt">${inr(t.amount)}</div>
+      <div class="t">${esc(t.title)}</div>
+      <div class="s">${esc(t.sub)}</div>
+    </button>`).join('');
+  $$('.tier').forEach((b) => b.addEventListener('click', () => {
+    const t = C.tiers[b.dataset.i];
+    $('#customAmt').value = '';
+    setAmount(t.amount, t.title);
+    if (innerWidth < 700) setTimeout(() => $('#pay').scrollIntoView({ behavior: 'smooth' }), 150);
+  }));
+  $('#customAmt').addEventListener('input', (e) => {
+    const v = Math.floor(Number(e.target.value));
+    setAmount(v > 0 ? v : 0, v > 0 ? 'Custom shagun ✨' : '');
+  });
+
+  let qrMade = false;
+  function setAmount(a, title) {
+    amount = a; tierTitle = title;
+    $$('.tier').forEach((b) => b.classList.toggle('on', C.tiers[b.dataset.i].amount === a && !$('#customAmt').value));
+    $('#selAmt').textContent = inr(a);
+    $('#selTitle').textContent = title || 'Amount chuno upar se 👆';
+    $('#upiBtn').href = upiLink(a || '');
+    $('#upiBtn').textContent = a ? `${inr(a)} UPI se bhejo 📲` : 'UPI app kholo 📲';
+    $('#stickyBtn').textContent = a ? `${inr(a)} shagun do 💸` : 'Shagun do 💸';
+    if (qrMade || innerWidth >= 700) drawQR();
+    drawCard();
+  }
+  function drawQR() {
+    qrMade = true;
+    const holder = $('#qr');
+    holder.innerHTML = '';
+    holder.appendChild(qrCanvas(upiLink(amount || ''), 440, '#0b0610', '#fbf3e4'));
+  }
+  $('#qrToggle').addEventListener('click', () => { $('#qrBox').classList.toggle('show'); drawQR(); });
+  $('#copyUpi').addEventListener('click', () => copy(C.upi.id, 'UPI ID copied ✅'));
+  $('#upiBtn').addEventListener('click', () => { if (!amount) toast('Amount nahi chuna — UPI app mein khud daal dena'); });
+  setAmount(0, '');
+
+  // sticky CTA appears after the hero, hides when pay box is visible
+  const visible = {};
+  const io = new IntersectionObserver((ents) => {
+    ents.forEach((en) => { visible[en.target.id] = en.isIntersecting; });
+    $('#stickyCta').classList.toggle('show', !visible.counterCard && !visible.pay && !visible.shagun);
+  });
+  ['counterCard', 'pay', 'shagun'].forEach((id) => io.observe($('#' + id)));
+
+  // ---- live counter + leaderboard
+  function aggregate(rows) {
+    const map = new Map();
+    rows.forEach((r) => {
+      const key = r.name.trim().replace(/^@+/, '').toLowerCase();
+      const cur = map.get(key) || { name: r.name.trim(), amount: 0 };
+      cur.amount += r.amount;
+      map.set(key, cur);
+    });
+    return [...map.values()].sort((a, b) => b.amount - a.amount);
+  }
+  if (configured) {
+    live(['donations'], async () => {
+      const rows = await select('donations', (q) => q.order('created_at', { ascending: false }).limit(5000));
+      const total = rows.reduce((s, r) => s + r.amount, 0);
+      countTo($('#total'), total, inr);
+      $('#goalBar').style.width = Math.min(100, (total / C.goal) * 100) + '%';
+      const people = aggregate(rows);
+      $('#givers').textContent = `${people.length} shagun-giver${people.length === 1 ? '' : 's'}`;
+      if (people.length) {
+        $('#lb').innerHTML = people.slice(0, 10).map((p, i) => `
+          <li><span class="rk">${['👑', '🥈', '🥉'][i] || '#' + (i + 1)}</span><span class="nm">${esc(p.name)}</span><span class="am">${inr(p.amount)}</span></li>`).join('');
+      }
+    });
+  } else {
+    $('#counterCard').classList.add('hidden');
+  }
+
+  // ---- shagun card generator (1080x1920)
+  const SUGG = ['Shaadi fake, khushiyan real ✨', 'Tum dono ka WiFi kabhi na toote 📶', 'Phoopha ji hamesha khush rahein 🙏', 'Sasural mein bhi Netflix password mile', 'Red flags kam, green flags zyada 🟢', 'Dil se shagun, NGO ke liye 💛'];
+  $('#sugg').innerHTML = SUGG.map((s) => `<button class="chip" type="button">${esc(s)}</button>`).join('');
+  $$('#sugg .chip').forEach((c) => c.addEventListener('click', () => { $('#cMsg').value = c.textContent; drawCard(); }));
+  ['#cName', '#cMsg', '#cShowAmt'].forEach((s) => $(s).addEventListener('input', drawCard));
+
+  function wrap(text, maxW, font) {
+    ctx.font = font;
+    const words = text.split(/\s+/).filter(Boolean), lines = [];
+    let line = '';
+    words.forEach((w) => {
+      const test = line ? line + ' ' + w : w;
+      if (ctx.measureText(test).width > maxW && line) { lines.push(line); line = w; } else line = test;
+    });
+    if (line) lines.push(line);
+    return lines;
+  }
+  function fitFont(text, weightFamily, maxSize, maxW) {
+    let s = maxSize;
+    do { ctx.font = `${weightFamily.replace('{s}', s)}`; s -= 4; } while (ctx.measureText(text).width > maxW && s > 30);
+    return ctx.font;
+  }
+  function centerText(t, y, font, color) { ctx.font = font; ctx.fillStyle = color; ctx.textAlign = 'center'; ctx.fillText(t, W / 2, y); }
+  function spaced(t, y, font, color, spacing) {
+    ctx.font = font; ctx.fillStyle = color; ctx.textAlign = 'left';
+    const chars = [...t];
+    const width = chars.reduce((s, c) => s + ctx.measureText(c).width, 0) + spacing * (chars.length - 1);
+    let x = W / 2 - width / 2;
+    chars.forEach((c) => { ctx.fillText(c, x, y); x += ctx.measureText(c).width + spacing; });
+  }
+  function roundRect(x, y, w, h, r) { ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x, y, w, h, r) : ctx.rect(x, y, w, h); }
+
+  function drawCard() {
+    const name = $('#cName').value.trim() || 'Your Name';
+    const msg = $('#cMsg').value.trim() || 'Shaadi fake, khushiyan real ✨';
+
+    // background
+    const g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, '#1a0610'); g.addColorStop(0.45, '#2b0814'); g.addColorStop(1, '#0b0610');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    // neon pillars
+    for (let x = 30; x < W; x += 64) {
+      const pg = ctx.createLinearGradient(0, 0, 0, 900);
+      pg.addColorStop(0, 'rgba(255,60,60,0.55)'); pg.addColorStop(1, 'rgba(255,60,60,0)');
+      ctx.fillStyle = pg; ctx.fillRect(x + ((x * 7) % 23), 0, 5, 700 + ((x * 13) % 260));
+    }
+    const glow = (x, y, r, c) => { const rg = ctx.createRadialGradient(x, y, 0, x, y, r); rg.addColorStop(0, c); rg.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = rg; ctx.fillRect(0, 0, W, H); };
+    glow(W / 2, 520, 620, 'rgba(226,40,59,0.35)');
+    glow(80, 1300, 520, 'rgba(255,79,154,0.22)');
+    glow(W, 1800, 600, 'rgba(245,196,94,0.18)');
+
+    // frame
+    ctx.strokeStyle = 'rgba(245,196,94,0.8)'; ctx.lineWidth = 4; roundRect(48, 48, W - 96, H - 96, 40); ctx.stroke();
+    ctx.strokeStyle = 'rgba(245,196,94,0.35)'; ctx.lineWidth = 2; roundRect(66, 66, W - 132, H - 132, 30); ctx.stroke();
+
+    spaced(E.presents.toUpperCase(), 170, '400 40px "Instrument Serif"', '#fbf3e4', 3);
+    spaced('PRESENTS', 220, '400 22px "Space Mono"', 'rgba(251,243,228,0.7)', 14);
+    centerText(E.hashtag, 300, 'italic 400 56px "Instrument Serif"', '#ff4f9a');
+
+    centerText('Fake', 520, '800 250px "Bricolage Grotesque"', '#fbf3e4');
+    centerText('Shaadi', 720, 'italic 400 260px "Instrument Serif"', '#f5c45e');
+    spaced('REAL SHAGUN CARD', 820, '700 34px "Space Mono"', '#c6f432', 8);
+
+    // name
+    spaced('SHAGUN FROM', 940, '400 26px "Space Mono"', 'rgba(251,243,228,0.65)', 8);
+    centerText(name, 1040, fitFont(name, '800 {s}px "Bricolage Grotesque"', 110, 880), '#fbf3e4');
+
+    let y = 1110;
+    if ($('#cShowAmt').checked && amount) {
+      const label = `${inr(amount)} · ${tierTitle || 'Shagun'}`;
+      ctx.font = '700 40px "Bricolage Grotesque"';
+      const w = Math.min(900, ctx.measureText(label).width + 80);
+      roundRect(W / 2 - w / 2, y - 6, w, 76, 38); ctx.fillStyle = '#f5c45e'; ctx.fill();
+      centerText(label, y + 46, '700 40px "Bricolage Grotesque"', '#1b0f05');
+      y += 120;
+    } else y += 40;
+
+    // aashirwad
+    centerText('“', y + 150, 'italic 400 180px "Instrument Serif"', '#ff4f9a');
+    const top = y + 80, bottom = 1585;
+    let size = 80, lines;
+    do { size -= 4; lines = wrap(msg, 840, `italic 400 ${size}px "Instrument Serif"`); } while (top + lines.length * size * 1.12 > bottom && size > 40);
+    const start = top + Math.max(0, (bottom - top - lines.length * size * 1.12) / 2) + size;
+    lines.slice(0, 6).forEach((l, i) => centerText(l, start + i * size * 1.12, `italic 400 ${size}px "Instrument Serif"`, '#fbf3e4'));
+
+    // footer
+    spaced('✦  ALL SHAGUN GOES TO  ✦', 1640, '400 24px "Space Mono"', 'rgba(251,243,228,0.7)', 4);
+    centerText(C.ngo.name, 1700, fitFont(C.ngo.name, '700 {s}px "Bricolage Grotesque"', 48, 860), '#c6f432');
+    spaced(`${E.date} · ${E.venue} · ${E.city}`.toUpperCase(), 1770, '400 24px "Space Mono"', '#f5c45e', 3);
+    centerText('made with SayIntro', 1830, '400 24px "Space Mono"', 'rgba(251,243,228,0.5)');
+  }
+
+  function cardBlob() { return new Promise((res) => cv.toBlob(res, 'image/png')); }
+  function fileName() { return `shagun-${($('#cName').value.trim() || 'card').replace(/[^a-z0-9]+/gi, '-').toLowerCase()}.png`; }
+  async function maybeSendToStage() {
+    if (!$('#cStage').checked || !configured || maybeSendToStage.sent === $('#cMsg').value) return;
+    const name = $('#cName').value.trim(), msg = $('#cMsg').value.trim();
+    if (!name || !msg) return;
+    try { await rpc('submit_aashirwad', { p_name: name, p_message: msg }); maybeSendToStage.sent = msg; toast('Aashirwad stage queue mein gaya 🙏'); } catch (e) { toast(e.message, true); }
+  }
+  $('#dl').addEventListener('click', async () => {
+    drawCard();
+    const url = URL.createObjectURL(await cardBlob());
+    const a = Object.assign(document.createElement('a'), { href: url, download: fileName() });
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    toast('Card download ho gaya ✨ Story pe daalo!');
+    maybeSendToStage();
+  });
+  $('#share').addEventListener('click', async () => {
+    drawCard();
+    const file = new File([await cardBlob()], fileName(), { type: 'image/png' });
+    maybeSendToStage();
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try { await navigator.share({ files: [file], text: `${E.tagline} ${E.hashtag}` }); } catch (e) { /* user cancelled */ }
+    } else {
+      toast('Is browser mein share nahi chalta — Download karo');
+    }
+  });
+
+  document.fonts.ready.then(() => Promise.all([
+    document.fonts.load('800 100px "Bricolage Grotesque"'),
+    document.fonts.load('italic 400 100px "Instrument Serif"'),
+    document.fonts.load('400 100px "Instrument Serif"'),
+    document.fonts.load('700 30px "Space Mono"'),
+    document.fonts.load('400 30px "Space Mono"'),
+  ])).catch(() => {}).finally(drawCard);
+  drawCard();
+})();
+</script>
+</body>
+</html>
